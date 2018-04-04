@@ -1,6 +1,6 @@
 <?php
-    session_start();
-  include_once("model/model.php");
+  session_start();
+  include_once("model/login_model.php");
 
   class Controller {
     public $model;
@@ -13,8 +13,11 @@
       
       $result = $this->model->getlogin();  
   
-      if($result == 'login') {
-        include_once( 'view/Afterlogin.php');
+      if ($result == 'register'){
+        include_once( 'view/register.php');
+      }
+      else if($result == 'login') {
+        include_once( 'view/search.php');
       }
       else {
         include_once( 'view/login.php');

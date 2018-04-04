@@ -1,23 +1,22 @@
 
-    <?php 
-      echo $result;
-    ?>
+<?php 
+	echo $result;
+?>
 <!DOCTYPE html>
 <html lang="en" class="gr__getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
     <title>Log In </title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/signin.css" rel="stylesheet">
+    <link href="css/signin.css" rel="stylesheet">
 
 
     <!-- js script to handle click on register  -->
@@ -48,7 +47,7 @@
   <body class="text-center" data-gr-c-s-loaded="true">
 
 
-	<form class="form-signin" method ='post'>
+	<form class="form-signin" method ='REQUEST'>
 	  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 	  <!-- <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1> --> 
 
@@ -56,15 +55,15 @@
       <input type="inputID" id="inputID" name ='sid' class="form-control" placeholder="Student ID"  autofocus="">  <!--required="" -->
       
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" name = 'pwd' class="form-control" placeholder="Password" ><!--required="" --> 
+      <input type="password" id="inputPassword" name = 'password' class="form-control" placeholder="Password" ><!--required="" --> 
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
         </label>
 
       </div>
-	  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-	  <button class="btn btn-lg btn-primary btn-block" type="register">Register</button>
+	  <button class="btn btn-lg btn-primary btn-block" name = 'submit' type="submit">Sign in</button>
+	  <button class="btn btn-lg btn-primary btn-block" name ='register' type="register">Register</button>
       
     </form>
 
