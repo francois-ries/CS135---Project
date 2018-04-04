@@ -1,5 +1,8 @@
+
+    <?php 
+      echo $result;
+    ?>
 <!DOCTYPE html>
-<!-- saved from url=(0051)https://getbootstrap.com/docs/4.0/examples/sign-in/ -->
 <html lang="en" class="gr__getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -44,27 +47,28 @@
 
   <body class="text-center" data-gr-c-s-loaded="true">
 
-    <!-- 
-    <form class="form-signin">
-      <img class="mb-4" src="./Signin Template for Bootstrap_files/bootstrap-solid.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <
-      <label for="inputID" class="sr-only">Email address</label>
-      <input type="inputID" id="inputID" class="form-control" placeholder="Student ID" required="" autofocus="">
+
+	<form class="form-signin" method ='post'>
+	  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+	  <!-- <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1> --> 
+
+      <label for="inputID" class="sr-only">Student ID</label>
+      <input type="inputID" id="inputID" name ='sid' class="form-control" placeholder="Student ID"  autofocus="">  <!--required="" -->
       
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+      <input type="password" id="inputPassword" name = 'pwd' class="form-control" placeholder="Password" ><!--required="" --> 
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
         </label>
 
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+	  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	  <button class="btn btn-lg btn-primary btn-block" type="register">Register</button>
+      
     </form>
-      -->
 
+	 <!--- 
     <div class="container" align='center'>
     	<div class="row">
 			<div class="col-md-6 col-md-offset-3">
@@ -140,5 +144,5 @@
 		</div>
 	</div>
   
-
+								-->
 </body></html>
