@@ -29,7 +29,7 @@ echo $result;
 
             <!-- Customer Information and Validation  -->
             <div class="col-md-8 order-md-1">
-                <h4 class="mb-3">Please enter follow information..</h4>
+                <h4 class="mb-3">Please enter the following information.</h4>
                     <form name="frmRegister" method="post">
             
                         <div class="row">
@@ -73,6 +73,7 @@ echo $result;
                                 Please enter a valid phone number for reservation updates.
                             </div>
                         </div>
+            
 
                         <div class="mb-3">
                             <label for="password">Password <span class="text-muted"></span></label>
@@ -88,10 +89,18 @@ echo $result;
                             <div class="invalid-feedback">
                                 Please confirm the password.
                             </div>
-                        </div>                                                
+                        </div>  
 
-                        
-                        
+                        <h4 class="mb-3">To register as admin, please enter admin key.</h4>
+                        <div class="mb-3">
+                            <label for="admin">Admin Key<span class="text-muted"></span></label>
+                            <input type="text" class="form-control" id="key" name='key' >
+                            <div class="invalid-feedback">
+                                Please enter admin code if you are registering an admin account.
+                            </div>
+                        </div>  
+                                                              
+                                    
                     <hr class="mb-4">
                     <button class="btn btn-primary btn-lg btn-block" type="submit" id = 'submit' name = 'submit'>Register</button>
                 </form>
