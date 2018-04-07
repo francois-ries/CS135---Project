@@ -17,7 +17,8 @@
         include_once( 'view/register.php');
       }
       else if($result == 'login') {
-        include_once( 'view/search.php');
+        // include_once( 'view/search.php');
+        include_once( 'UserBooking.php');
       }
       else {
         include_once( 'view/login.php');
