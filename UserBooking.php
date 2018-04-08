@@ -22,6 +22,25 @@
 <center><h1 text-align:"center">Make A Reservation</h1></center>
 <body>
 
+<!-- DB CONNECTION -->
+<?PHP
+
+$servername = "localhost";
+$username = "root";
+$password = "root";
+
+try {
+    $con = new PDO("mysql:host=$servername;dbname=crs", $username, $password);
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //echo "Connected successfully"; 
+    }
+catch(PDOException $e)
+    {
+    echo "Connection failed: " . $e->getMessage();
+    }
+
+?>
+
 <!-- FORM -->
 <form method="post">
 
@@ -88,6 +107,85 @@ foreach ($formID_array as $key=>$value) {
   }
 }
 
+// SQL STATEMENTS FOR THE ROOM SEARCH
+
+$roomWithEquipement = array();
+hasRoomEquipement($con, $formID_array, $roomWithEquipement);
+
+// Should return an array with all the rooms complying with the room equipement requirements of the user
+function hasRoomEquipement ($con, $formID_array, $roomWithEquipement) {
+$needComputer = null;
+$needBlackboard = null;
+
+  if($formID_array["computer"] == 1) {
+    $needComputer = 1; 
+  } else {
+    $needComputer = 0;
+  }
+
+  if($formID_array["blackboard"] == 1) {
+    $needBlackboard = 1;
+  } else {
+    $needBlackboard = 0;
+  }
+
+  //SELECT `room_id`, `computer`, `blackboard` FROM `room` WHERE `computer`= 1 AND `blackboard`= 1
+  $getRoom = $con->prepare("SELECT room_id, computer, blackboard FROM room WHERE computer = ? AND blackboard = ?");
+  $getRoom->execute([$needComputer, $needBlackboard]);
+  $rooms = $getRoom->fetchAll();
+
+  // Extracts room_id, computer, and baclkboard from the room table
+  foreach ($rooms as $array) {
+    $thisRoomID = $array["room_id"];
+    $thisComputer = $array["computer"];
+    $thisBlackboard = $array["blackboard"];
+
+    //echo "room: ".$thisRoomID." Computer: ".$thisComputer." Blackboard: ".$thisBlackboard; 
+  }
+
+  
+  // Should returns an array with all the rooms complying with the campus location requirements of the user
+  function hasCampusLocation ($con, $formID_array, $roomWithCampusLocation) {
+    //SELECT `room_id`, `location` FROM `room`
+
+    $getRoom = $con->prepare("SELECT room_id, location FROM room");
+    $getRoom->execute();
+    $rooms = $getRoom->fetchall();
+
+    foreach ($rooms as $array) {
+      $thisRoomID = $array["room_id"];
+      $thisLocation = $array["location"];
+
+      //echo "roomID: ".$thisRoomID." Location: ".$thisLocation;
+    }
+  }
+
+  $roomWithCampusLocation = array();
+  hasCampusLocation($con, $formID_array, $roomWithCampusLocation);
+
+  // Should returns an array with all the rooms complying with the room size requirements of the user
+  function hasCapacity ($con, $formID_array, $roomWithCapacity) {
+    //SELECT `room_id`, `capacity` FROM `room`
+
+    $getRoom = $con->prepare("SELECT room_id, capacity FROM room");
+    $getRoom->execute();
+    $rooms = $getRoom->fetchall();
+
+    foreach ($rooms as $array) {
+      $thisRoomID = $array["room_id"];
+      $thisCapacity = $array["capacity"];
+
+      //echo "roomID: ".$thisRoomID." Capacity: ".$thisCapacity;
+    }
+
+  }
+
+  $roomWithCapacity = array();
+  hasCapacity($con, $formID_array, $roomWithCapacity);
+
+
+
+}
 
 ?>
 
