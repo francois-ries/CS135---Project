@@ -18,7 +18,10 @@
       }
       else if($result == 'login') {
         // include_once( 'view/search.php');
-        include_once( 'UserBooking.php');
+        include_once( 'view/UserBooking.php');
+      }
+      else if ($result == 'admin'){
+        include_once( 'view/adminview.php');
       }
       else {
         include_once( 'view/login.php');

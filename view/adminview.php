@@ -21,10 +21,9 @@ echo $output;*/
 <!DOCTYPE html>
 
 <?php 
-	if (!isset($_SESSION['userid'])) {
-	    $_SESSION['userid'] = new ShoppingCart();
+	if (isset($_SESSION['userid'])) {
+		$sid = $_SESSION['userid'];
 	}
-	$sid = $_SESSION['userid'];
 
 	$query = "SELECT fname from Customer where sid=?"; //select name from table if it matches input that was given
 	if($selectUser = $connection -> prepare($query)){ //makes sure prepare is not false
