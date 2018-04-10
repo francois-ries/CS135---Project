@@ -21,7 +21,9 @@ echo $output;*/
 <!DOCTYPE html>
 
 <?php 
-	$sid = $_SESSION['userid'];
+	if (isset($_SESSION['userid'])) {
+		$sid = $_SESSION['userid'];
+ 	}
 ?>
 
 	<head> 
