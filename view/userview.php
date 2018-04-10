@@ -21,12 +21,9 @@ echo $output;*/
 <!DOCTYPE html>
 
 <?php 
-	if (!isset($_SESSION['userid'])) {
-	    $_SESSION['userid'] = new ShoppingCart();
-	}
 	$sid = $_SESSION['userid'];
 
-	$query = "SELECT fname from Customer where sid=?"; //select name from table if it matches input that was given
+	/*$query = "SELECT fname from Customer where sid=?"; //select name from table if it matches input that was given
 	if($selectUser = $connection -> prepare($query)){ //makes sure prepare is not false
 		$selectUser -> bind_param("i", $sid);
 	}
@@ -38,27 +35,33 @@ echo $output;*/
     }else{
     	echo "User not found <br>";
     }
-    mysqli_stmt_close($selectUser);
+    mysqli_stmt_close($selectUser);*/
 ?>
 
-<head> 
+	<head> 
 		<Title> User Main Page</Title>
     	<meta name="description" content="Main user page where current reservations are displayed.">
-    	<style>
-    		.nav{
-    			display: inline;
-    			padding: 8px;
-    			background-color: darkcyan;
-    		}
-    	</style>
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 
 	<header>
 		<!---creates a navigator which links to main page or reservation page-->
-		<ul style="list-style-type: none; margin:0; padding:0">
-			<li class="nav"><a href="userview.php">Main</a></li>
-			<li class="nav"><a href="UserBooking.php">Search</a></li> <!--will link to search page-->
-		</ul>
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#">CMC Room Reservations</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+		      <li class="active"><a href="userview.php">Current Reservations</a></li>
+		      <li><a href="UserBooking.php">Search</a></li>
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
+		    </ul>
+		  </div>
+		</nav>
 		<h1> Welcome <?php echo $username; ?> </h1>
 	</header>
 
@@ -73,12 +76,12 @@ echo $output;*/
 				<th>Status</th>
 				<th>Action</th>
 			</tr>
-			<?php
+			<?php //call query to call all-how to display
 			foreach($this->order as $key => $value){//iterate through reservations
 		          echo "<tr><td>".$roomname."</td>"; //room name
 		          echo "<td>".ShoppingCart::$cookieTypes[$key]."</td>"; //date of reservation
 		          echo "<td>".$start_time."to".$end_time."</td>"; //time of reservation
-		          echo "<td> $".$computer.$blackboard"</td>"; //room features
+		          echo "<td> $".$computer.$blackboard."</td>"; //room features
 		          echo "<td>".$approved."</td>"; //status of resrervation
 		          echo "<td><input type='submit' name='cancel".$room_id."value='Cancel'/></td>"; //cancel reservation
 		          echo "</tr>";
