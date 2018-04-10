@@ -21,7 +21,9 @@ echo $output;*/
 <!DOCTYPE html>
 
 <?php 
-	$sid = $_SESSION['userid'];
+	if (isset($_SESSION['userid'])) {
+		$sid = $_SESSION['userid'];
+ 	}
 
 	/*$query = "SELECT fname from Customer where sid=?"; //select name from table if it matches input that was given
 	if($selectUser = $connection -> prepare($query)){ //makes sure prepare is not false
