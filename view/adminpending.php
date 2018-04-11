@@ -28,7 +28,7 @@ print_r($_SESSION);
 	//finds all pending reservations
 	function hasRoomPending ($con) {
 
-		$getRoom = $con->prepare("SELECT R.roomname, R.rid, O.rid, U.sid, O.start_time, O.end_time FROM R.Room, O.Reservation, U.User WHERE R.rid=O.rid AND R.sid=U.sid AND O.approved=FALSE");
+		$getRoom = $con->prepare("SELECT R.roomname, R.rid, O.rid, U.sid, O.start_time, O.end_time FROM R.Room, O.Reservation, U.User WHERE R.rid=O.rid AND R.sid=U.sid AND O.approved=null");
 		$getRoom->execute();
 		$rooms = $getRoom->fetchAll();
 
@@ -44,9 +44,8 @@ print_r($_SESSION);
 			$acceptRoom->execute($thisRoomId);
 	  	}
 	  	if(isset($_POST["deny".$thisRoomId])){
-	  		//do we delete entire tuple? How do we send info to user that the reservation has been rejected?
-	  		//$denyRoom = $con->prepare("UPDATE Reservation SET approved")
-
+	  		$denyRoom = $con->prepare("UPDATE Reservation SET approved=FALSE WHERE rid=?");
+			$denyRoom->execute($thisRoomId);
 	  	}
 	  }
 ?>
