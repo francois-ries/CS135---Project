@@ -2,20 +2,6 @@
 
 session_start(); 
 print_r($_SESSION);
-//require 'dbConnect.php';
-/*define('DBHOST',"localhost"); //will change variables later
-define('DBNAME', "gsc");
-define('DBUSER',"klaudia");
-define('DBPASS',"dziewulski");
-
-$connection = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-if ($connection->connect_error) {
-	$output = "<p>Unable to connect to database -- </p>" . $connection->connect_error;
-	exit($output);
-} else {
-	$output = "<p>Connected to database </p>";
-}
-echo $output;*/
 ?>
 
 <!DOCTYPE html>
@@ -69,8 +55,9 @@ echo $output;*/
 		      <a class="navbar-brand" href="#">CMC Room Reservations</a>
 		    </div>
 		    <ul class="nav navbar-nav">
-		      <li class="active"><a href="userview.php">Current Reservations</a></li>
-		      <li><a href="UserBooking.php">Search</a></li>
+		      <li class="active"><a href="adminview.php">All Reservations</a></li>
+		      <li class="active"><a href="adminpending.php">Pending Reservations</a></li>
+			<li class="active"><a href="adminupdates.php">Room Updates</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
