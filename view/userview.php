@@ -2,20 +2,7 @@
 
 session_start(); 
 print_r($_SESSION);
-//require 'dbConnect.php';
-/*define('DBHOST',"localhost"); //will change variables later
-define('DBNAME', "gsc");
-define('DBUSER',"klaudia");
-define('DBPASS',"dziewulski");
 
-$connection = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-if ($connection->connect_error) {
-	$output = "<p>Unable to connect to database -- </p>" . $connection->connect_error;
-	exit($output);
-} else {
-	$output = "<p>Connected to database </p>";
-}
-echo $output;*/
 ?>
 
 <!DOCTYPE html>
@@ -25,19 +12,32 @@ echo $output;*/
 		$sid = $_SESSION['userid'];
  	}
 
-	/*$query = "SELECT fname from Customer where sid=?"; //select name from table if it matches input that was given
-	if($selectUser = $connection -> prepare($query)){ //makes sure prepare is not false
-		$selectUser -> bind_param("i", $sid);
-	}
-	if(!$selectUser) die ("Database access failed: " . $connection->error);
-	mysqli_stmt_execute($selectUser);
-    $selectUser -> bind_result($sid);
-    if($selectUser -> fetch()){ //means user is already in database, prints user name if already in db
-    	echo "Your name is $username <br>"; 
-    }else{
-    	echo "User not found <br>";
-    }
-    mysqli_stmt_close($selectUser);*/
+	$servername = "localhost";
+	$username = "root";
+	$password = "root";
+
+	try {
+	    $con = new PDO("mysql:host=$servername;dbname=crs", $username, $password);
+	    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	    //echo "Connected successfully"; 
+	    }
+	catch(PDOException $e)
+	    {
+	    echo "Connection failed: " . $e->getMessage();
+	    }
+
+	//finds all pending and accepted reservations with user with userid $sid
+	function hasRoom ($con, $sid) {
+
+		$getRoom = $con->prepare("SELECT R.roomname, R.rid, O.rid, U.sid, O.start_time, O.end_time, R.computer, R.blackboard FROM R.Room, O.Reservation, U.User WHERE R.rid=O.rid AND R.sid=U.sid AND U.sid=?");
+		$getRoom->execute($sid);
+		$rooms = $getRoom->fetchAll();
+
+		return $rooms;
+	 
+	  }
+	  $rooms = hasRoom($con, $sid);
+
 ?>
 
 	<head> 
@@ -69,7 +69,7 @@ echo $output;*/
 
 	<body>
 		<h2>Reservations </h2>
-		<table width = 80%>
+		<table width = 80%, class="table table-striped">
 			<tr> 
 				<th>Room</th>
 				<th>Date</th>
@@ -78,15 +78,30 @@ echo $output;*/
 				<th>Status</th>
 				<th>Action</th>
 			</tr>
-			<?php //call query to call all-how to display
-			foreach($this->order as $key => $value){//iterate through reservations
-		          echo "<tr><td>".$roomname."</td>"; //room name
-		          echo "<td>".ShoppingCart::$cookieTypes[$key]."</td>"; //date of reservation
-		          echo "<td>".$start_time."to".$end_time."</td>"; //time of reservation
-		          echo "<td> $".$computer.$blackboard."</td>"; //room features
-		          echo "<td>".$approved."</td>"; //status of resrervation
-		          echo "<td><input type='submit' name='cancel".$room_id."value='Cancel'/></td>"; //cancel reservation
-		          echo "</tr>";
-		      }
+			<?php 
+				foreach ($rooms as $array) {
+					$thisRoomId = $array["room_id"];
+					$thisRoomName = $array["roomname"];
+					$thisRoomStart = $arry["start_time"];
+					$thisRoomEnd = $array["end_time"];
+					$thisRoomComputer = $array["computer"];
+					$thisRoomBlackboard = $array["blackboard"];
+					$thisRoomApproved = $array["approved"];
+					$status = "";
+					if($thisRoomApproved == true){
+						$status = "Accepted";
+					}else{
+						$status = "Pending";
+					}
+					echo "<tr><td>".$thisRoomName."</td>"; //room name
+					echo "<td>Add date here </td>"; //date of reservation
+					echo "<td>".$thisRoomStart."to".$thisRoomEnd."</td>"; //time of reservation
+					echo "<td> Computer: ".$thisRoomComputer." Blackboard: ".$thisRoomBlackboard."</td>"; //room features
+					echo "<td>".$status."</td>"; //status of resrervation
+					echo "<td><input type='submit' name='cancel".$thisRoomId."value='Cancel'/></td>"; //cancel reservation
+					echo "</tr>";
+				}
 			?>
 		</table>
+</body>
+
