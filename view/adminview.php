@@ -24,6 +24,32 @@ echo $output;*/
 	if (isset($_SESSION['userid'])) {
 		$sid = $_SESSION['userid'];
  	}
+
+ 		$servername = "localhost";
+	$username = "root";
+	$password = "root";
+
+	try {
+	    $con = new PDO("mysql:host=$servername;dbname=crs", $username, $password);
+	    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	    //echo "Connected successfully"; 
+	    }
+	catch(PDOException $e)
+	    {
+	    echo "Connection failed: " . $e->getMessage();
+	    }
+
+	//finds all accepted reservations
+	function hasRoomApproved ($con) {
+
+		$getRoom = $con->prepare("SELECT R.roomname, R.rid, O.rid, U.sid, O.start_time, O.end_time FROM R.Room, O.Reservation, U.User WHERE R.rid=O.rid AND R.sid=U.sid AND O.approved=TRUE");
+		$getRoom->execute();
+		$rooms = $getRoom->fetchAll();
+
+		return $rooms;
+	 
+	  }
+	  $rooms = hasRoomApproved($con);
 ?>
 
 	<head> 
@@ -60,20 +86,23 @@ echo $output;*/
 				<th>Room</th>
 				<th>Date</th>
 				<th>Time</th>
-				<th>Room Features</th>
-				<th>Status</th>
-				<th>Action</th>
+				<th>User</th>
 			</tr>
 			<?php
-			//$query= SELECT R.roomname, R.rid, O.rid FROM R.Room, O.Reservation WHERE R.rid=O.rid && approved=TRUE;
-			foreach($this->order as $key => $value){//iterate through reservations
-		          echo "<tr><td>".$roomname."</td>"; //room name
-		          echo "<td>".ShoppingCart::$cookieTypes[$key]."</td>"; //date of reservation
-		          echo "<td>".$start_time."to".$end_time."</td>"; //time of reservation
-		          echo "<td> $".$computer.$blackboard"</td>"; //room features
-		          echo "<td>".$approved."</td>"; //status of resrervation
-		          echo "<td><input type='submit' name='cancel".$room_id."value='Cancel'/></td>"; //cancel reservation
-		          echo "</tr>";
-		      }
+				foreach ($rooms as $array) {
+					$thisRoomId = $array["room_id"];
+					$thisRoomName = $array["roomname"];
+					$thisRoomStart = $arry["start_time"];
+					$thisRoomEnd = $array["end_time"];
+					$thisRoomUser = $array["sid"];
+
+					echo "<tr><td>".$thisRoomName."</td>"; //room name
+					echo "<td>Add date here </td>"; //date of reservation
+					echo "<td>".$thisRoomStart."to".$thisRoomEnd."</td>"; //time of reservation
+					echo "<td>".$thisRoomUser."</td>"; //room user
+					echo "</tr>";
+				}
+			
 			?>
 		</table>
+	</body>
