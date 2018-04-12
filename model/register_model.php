@@ -1,12 +1,9 @@
 <?php
-    require "../application/cart.php";
-    //require 'dbConnect.php';
-    //$conn = connect_to_db('gsc');
-    require 'queries.php';
-    require 'handle_order.php';
+    require 'dbConnect.php';
+    // $conn = connect_to_db('crs');
     session_start(); 
 
-class Model {
+class RegisterModel {
 
 	public function register()
  	{
@@ -17,26 +14,46 @@ class Model {
             
             $fname=trim($_POST["firstname"]);
             $lname=trim($_POST["lastname"]);
-            $sid=trim($_POST['sid']);
+            $userid=trim($_POST['user_id']);
             $email=trim($_POST["email"]);
             $phone=trim($_POST["phone"]);
             $password=trim($_POST["password"]);
             $cpassword=trim($_POST["cpassword"]);
+            $admin_key=trim($_POST["key"]);
 
             $validated = true;
 
-            if (!preg_match("/^[a-zA-Z ]*$/",$fname)){
+            if (!preg_match("/^[a-zA-Z]*$/",$fname)){
                 $validated = false;
                 echo "<br> Invalid First Name";
             }else{
                 echo "<script>$('#firstname').addClass('was-validated')</script>";
             }
 
-            if (!preg_match("/^[a-zA-Z ]*$/",$lname)){
+            if (!preg_match("/^[a-zA-Z]*$/",$lname)){
                 $validated = false;
                 echo "<br> Invalid Last Name";
             }else{
                 echo "<script>$('#lastname').addClass('was-validated')</script>";
+            }
+
+            if (!preg_match("/^[0-9]{8}/",$userid)){
+                $validated = false;
+                echo "<br> Invalid User Id ";
+            }else{
+                 // check whether the id has already created an account
+                $check_whether_created_query = "SELECT user_id from User where user_id =?";
+                $check_whether_created_stmt = mysqli_prepare($conn, $check_whether_created_query);
+                
+                mysqli_stmt_bind_param($check_whether_created_stmt,"s", $userid);
+
+                $check_whether_created_stmt->execute();
+                if( $check_whether_created_stmt->fetch()){
+                    echo "<br> The Userid has already registered";
+                    $validated = false;
+                }else{                  
+                    echo "<script>$('#userid').addClass('was-validated')</script>";                    
+                }
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -67,97 +84,55 @@ class Model {
                 echo "<script>$('#cpassword').addClass('was-validated')</script>";
             }
 
-            if ( $validated == true ){
-                /// enter the info into database 
-                echo "all passes"."<br>";
-                $name = $fname." ".$lname;
-                $gsname=trim($_POST['gsname']);
-                $gstroop=trim($_POST["gstroop"]);
+            if (!$adminkey ){
+                echo "<br> Not a admin register";
+                $admin = false;
+                echo "<script>$('#cpassword').addClass('was-validated')</script>";
+            }
+            else if ($adminkey == "secretkey"){
+                $admin = true;
+                echo "<script>$('#cpassword').addClass('was-validated')</script>";
+            }else{
+                $validated = false;
+                echo "<br> Wrong Admin Key";
+            }
+
+            if ($validated){
+
+                $fname=trim($_POST["firstname"]);
+                $lname=trim($_POST["lastname"]);
+                $userid=trim($_POST['user_id']);
                 $email=trim($_POST["email"]);
                 $phone=trim($_POST["phone"]);
-                $zipcode=trim($_POST["zip"]);
-                $city=trim($_POST["city"]);
-                $state=trim($_POST["state"]);
-                $address = trim($_POST["address"]);
-                $address2 = trim($_POST["address2"]);
-                $street_address = $address+"@"+$address2;
-                // echo " got all variables, ready to do some sql "."<br>";
-
-
-                // see whether the customer is in the database
-                $selectCustomer->execute();
-                $selectCustomer->bind_result($cid);
-                if($selectCustomer->fetch()){
-                    //echo " fetched the customer "."<br>";
-                    $cid = $cid;      
-                    //echo "Your ID is ".$cid. ". <br>";
+                $password=trim($_POST["password"]);
+                $cpassword=trim($_POST["cpassword"]);
+                $admin;
+    
+                if ($admin){
+                    // query for admin 
+                    $insert_query = "INSERT INTO User (fname,lname, user_id, email, phone, password, admin) VALUES(?,?,?,?,?,?,true)";
                 }else{
-                    echo "start to create a customer"."<br>";
-                    // not in database, then create a new customer row 
-                    mysqli_stmt_execute($insertCustomer);
-                    // echo "executed one insert customer <br>";
-                    //fetch cid and bind it 
-                    $cid = mysqli_insert_id($conn);
-                    echo "Welcome, your new ID is".$cid.". <br>";
+                    //query for regular user
+                    $insert_query = "INSERT INTO User (fname,lname, user_id, email, phone, password, admin) VALUES(?,?,?,?,?,?,false)";
                 }
-                mysqli_stmt_close($selectCustomer);
-                mysqli_stmt_close($insertCustomer);
 
+                $insert_user = mysqli_prepare($conn,$insert_query);
+                mysqli_stmt_bind_param($insert_user,"ssssss", $fname, $lname, $user_id, $email, $phone,$password);
 
-                // get gsid 
-                $selectGirlScout->execute();
-                echo "executted slect girl s <br>";
-                $selectGirlScout -> bind_result($gsid);
+                $insert_user->execute();
+                $inserted_id = mysqli_stmt_insert_id($selectCustomer);
+                mysqli_stmt_close($insert_user);
+                disconnect_from_db($conn, $insert_user);
 
-                if($selectGirlScout->fetch()){
-                    // set cid to the result 
-                    echo "The girls scout's ID ".$gsid. ". <br>";
+                return "registered";
 
-                }else{
-                    
-                    // not in database, then create a new customer row 
-                    mysqli_stmt_execute($insertGirlScout);
-
-                    //fetch cid and bind it 
-                    $gsid = mysqli_stmt_insert_id($insertGirlScout);
-                    echo "Create a new girl in troop. Girls scout's ID".$gsid.". <br>";
-                }
-                $selectGirlScout->close();
-                $insertGirlScout->close();
-
-
-                // having both gsid and cid, then insert order row
-                mysqli_stmt_execute($insert_order);
-                $order_id =  mysqli_stmt_insert_id($insert_order);
-                // echo "order_id is ".$order_id."<br>";
-                $insert_order->close();
-
-                //process the order 
-                $box_price = 5; // all cookies are sell at 5 dollas
-                foreach ($cart as $key => $value) {
-                    
-                    $type = $key;
-                    //echo "type ".$type."<br>";
-                    $quantity=$value;
-                    //echo "quantity ".$quantity."<br>";
-                    $price = $quantity*$box_price;
-                    //echo "price ".$price."<br>";               
-                    mysqli_stmt_execute($insert_cookie);
-                    echo "executed insert_cookie<br>";
-        
-                }
-                $insert_cookie->close();
-                echo "<script>\n
-                window.location.href = 'action_page.php';\n
-                </script>";
-                disconnect_from_db($connection, $selectGirlScout);
             }
+
         }
         
            
     }
-
-  		
+		
 }
  
 ?> 

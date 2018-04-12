@@ -24,12 +24,12 @@ CREATE TABLE Room(
 
 CREATE TABLE Reservation(
     res_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    timestamp TIMESTAMP NOT NULL, -- record the entry is created 
+    timestamp TIMESTAMP NOT NULL, -- record when the entry is created 
     room_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL, 
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
-    approved BOOLEAN NOT NULL DEFAULT 0, -- FAULT IS FALSE 
+    approved BOOLEAN DEFAULT NULL, -- FAULT IS NULL, APPROVED TRUE, REJECT FALSE 
     message TEXT,
     PRIMARY KEY (res_id),
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id),

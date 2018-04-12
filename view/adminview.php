@@ -4,9 +4,9 @@ session_start();
 print_r($_SESSION);
 ?>
 
-<!DOCTYPE html>
 
 <?php 
+
 	if (isset($_SESSION['userid'])) {
 		$sid = $_SESSION['userid'];
  	}
@@ -37,6 +37,8 @@ print_r($_SESSION);
 	  }
 	  $rooms = hasRoomApproved($con);
 ?>
+
+<!DOCTYPE html>
 
 	<head> 
 		<Title> Admin Main Page</Title>

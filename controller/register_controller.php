@@ -2,7 +2,7 @@
   session_start();
   include_once("model/register_model.php");
 
-  class Controller {
+  class RegisterController {
     public $model;
  
     public function __construct()  {  

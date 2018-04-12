@@ -1,7 +1,8 @@
-
 <?php 
-	echo $result;
+	echo "<br>result : ".$_SESSION['result'];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en" class="gr__getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
@@ -47,23 +48,23 @@
   <body class="text-center" data-gr-c-s-loaded="true">
 
 
-	<form class="form-signin" method ='REQUEST'>
+	<form class="form-signin" method ='post'>
 	  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 	  <!-- <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1> --> 
 
-      <label for="inputID" class="sr-only">Student ID</label>
-      <input type="inputID" id="inputID" name ='sid' class="form-control" placeholder="Student ID"  autofocus="">  <!--required="" -->
+      <label for="userid" class="sr-only">Student ID</label>
+      <input type="userid" id="userid" name ='userid' class="form-control" placeholder="Student ID"  autofocus="">  <!--required="" -->
       
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" name = 'password' class="form-control" placeholder="Password" ><!--required="" --> 
+      <label for="password" class="sr-only">Password</label>
+      <input type="password" id="password" name = 'password' class="form-control" placeholder="Password" ><!--required="" --> 
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
         </label>
 
       </div>
-	  <button class="btn btn-lg btn-primary btn-block" name = 'submit' type="submit">Sign in</button>
-	  <button class="btn btn-lg btn-primary btn-block" name ='register' type="register">Register</button>
+	  <button class="btn btn-lg btn-primary btn-block" name ='submit' id = 'submit' type="submit">Sign in</button>
+	  <button class="btn btn-lg btn-primary btn-block" name ='register' id ='register'  type="submit">Register</button>
       
     </form>
 

@@ -3,73 +3,70 @@
 // require 'dbConnect.php';
 // $conn = connect_to_db('crs');
 session_start(); 
+echo "<br>login_model is called";
+
+class LoginModel {
 
 
-class Model {
-
-	public function getlogin()
+	public static function getlogin()
  	{
 		// return "cool" ;
 		// here goes some hardcoded values to simulate the database
-		if(isset($_REQUEST['register'])){
+		echo "<br>login_model get log in  function is called";
+		if(isset($_POST['register'])){
 			return 'register';
 
 		}
-
-		if($_REQUEST['sid']=='admin' && $_REQUEST['password']=='admin'){
-			return 'admin';
-		}
-
-		if($_REQUEST['sid']=='login' && $_REQUEST['password']=='login'){
-			return 'login';
-		}
-
 		
-  		if(isset($_REQUEST['sid']) && isset($_REQUEST['password'])){
+		if(isset($_POST['submit'])){
+	
+  		if(isset($_POST['userid']) && isset($_POST['password'])){
+
+
 			// for easy log in for testing 
-			if($_REQUEST['sid']=='admin' && $_REQUEST['password']=='admin'){
+			if($_POST['userid']=='login' && $_POST['password']=='login'){
 				return 'login';
+			}
+		
+			// for easy admin log in for testing 
+			if($_POST['userid']=='admin' && $_POST['password']=='admin'){
+				return 'admin';
 			}
 
 			// extract variables
-			$sid = mysql_real_escape_string($_REQUEST['sid']);
-			$password = mysql_real_escape_string($_REQUEST['password']);
+			$sid = mysql_real_escape_string($_POST['userid']);
+			$password = mysql_real_escape_string($_POST['password']);
 
 			// check database
-			$login_query = "SELECT user_id from User where user_id =? and password = ? and admin = false";
+			$login_query = "SELECT user_id, admin from User where user_id =? and password = ?";
 			$login_stmt = mysqli_prepare($conn, $login_query);
-			mysqli_stmt_bind_param($login_stmt,"ss", $sid, $password);
 			
-			$login_stmt->execute();
-			$login_stmt -> bind_result($userid);
+			mysqli_stmt_bind_param($login_stmt,"ss", $sid, $password);
 
-			if($login_stmt->fetch()){
+			$login_stmt->execute();
+			$result = $login_stmt->fetch(PDO::FETCH_ASSOC);
+
+			if(!$result){
+				return 'invalid user';
+
+			}else{
+				$row = mysql_fetch_assoc($result);
+				$userid = $row['user_id'];
 				echo "Welcome! ";
 				$_SESSION['userid'] = $userid;
-				return "login";
-			}else{
-				// start admin log in 
-				$admin_login_query = "SELECT user_id from User where sid =? and password = ? and admin = true";
-				$admin_login_stmt = mysqli_prepare($conn, $admin_login_query);
-				mysqli_stmt_bind_param($admin_login_stmt,"ss", $sid, $password);
-
-				$admin_login_stmt->execute();
-				$admin_login_stmt -> bind_result($fname);
-			
-				if($admin_login_stmt->fetch()){
-					echo "Welcome Admin";
-					$_SESSION['userid'] = $userid;
-					return "admin";
+				$admin = $row['admin'];
+				if (!$admin){
+					return "login";
 				}else{
-					return 'invalid user';
+					return "admin";
 				}
-
-
 			}
 		}
 
+
  	}
  
+}
 }
 
 ?>
