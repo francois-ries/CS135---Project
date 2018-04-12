@@ -15,6 +15,7 @@ CREATE TABLE User(
 
 CREATE TABLE Room(
     room_id INT UNSIGNED NOT NULL,
+    roomname VARCHAR(256) NOT NULL,
     capacity INT UNSIGNED NOT NULL,
     location INT UNSIGNED NOT NULL, -- 0 RS, 1 RN, 2 Bauer, 3 Kravis, 4 others
     computer BOOLEAN NOT NULL DEFAULT 0,
