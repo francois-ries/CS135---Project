@@ -2,16 +2,17 @@
 
 session_start(); 
 print_r($_SESSION);
+
 ?>
 
 <!DOCTYPE html>
 
 <?php 
 	if (isset($_SESSION['userid'])) {
-		$sid = $_SESSION['userid'];
+		$user_id = $_SESSION['userid'];
  	}
 
- 		$servername = "localhost";
+ 	$servername = "localhost";
 	$username = "root";
 	$password = "root";
 
@@ -28,7 +29,7 @@ print_r($_SESSION);
 	//finds all pending reservations
 	function hasRoomPending ($con) {
 
-		$getRoom = $con->prepare("SELECT R.roomname, R.rid, O.rid, U.sid, O.start_time, O.end_time FROM R.Room, O.Reservation, U.User WHERE R.rid=O.rid AND R.sid=U.sid AND O.approved=null");
+		$getRoom = $con->prepare("SELECT R.roomname, R.room_id, O.room_id, U.user_id, O.start_time, O.end_time FROM Room R, Reservation O, User U WHERE R.room_id=O.room_id AND O.user_id=U.user_id AND O.approved=NULL");
 		$getRoom->execute();
 		$rooms = $getRoom->fetchAll();
 
@@ -83,8 +84,7 @@ print_r($_SESSION);
 		<table width = 80%>
 			<tr> 
 				<th>Room</th>
-				<th>Date</th>
-				<th>Time</th>
+				<th>Date and Time</th>
 				<th>User</th>
 				<th>Action</th>
 			</tr>
@@ -92,15 +92,14 @@ print_r($_SESSION);
 				foreach ($rooms as $array) {
 					$thisRoomId = $array["room_id"];
 					$thisRoomName = $array["roomname"];
-					$thisRoomStart = $arry["start_time"];
+					$thisRoomStart = $array["start_time"];
 					$thisRoomEnd = $array["end_time"];
-					$thisRoomUser = $array["sid"];
+					$thisRoomUser = $array["user_id"];
 
 					echo "<tr><td>".$thisRoomName."</td>"; //room name
-					echo "<td>Add date here </td>"; //date of reservation
-					echo "<td>".$thisRoomStart."to".$thisRoomEnd."</td>"; //time of reservation
+					echo "<td>".$thisRoomStart." to ".$thisRoomEnd."</td>"; //time of reservation
 					echo "<td>".$thisRoomUser."</td>"; //room user
-					echo "<td><input type='submit' name='accept".$thisRoomId."value='Accept'/><input type='submit' name='deny".$thisRoomId."value='Deny'/></td>";
+					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept'/><input type='submit' name='deny".$thisRoomId."'value='Deny'/></td>";
 					echo "</tr>";
 				}
 			
