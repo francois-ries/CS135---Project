@@ -9,10 +9,11 @@ print_r($_SESSION);
 
 <?php 
 	if (isset($_SESSION['userid'])) {
-		$sid = $_SESSION['userid'];
+		$user_id = $_SESSION['userid'];
  	}
+ 	$user_id="40416925";
 
-	$servername = "localhost";
+ 	$servername = "localhost";
 	$username = "root";
 	$password = "root";
 
@@ -26,17 +27,17 @@ print_r($_SESSION);
 	    echo "Connection failed: " . $e->getMessage();
 	    }
 
-	//finds all pending and accepted reservations with user with userid $sid
-	function hasRoom ($con, $sid) {
-
-		$getRoom = $con->prepare("SELECT R.roomname, R.rid, O.rid, U.sid, O.start_time, O.end_time, R.computer, R.blackboard FROM R.Room, O.Reservation, U.User WHERE R.rid=O.rid AND R.sid=U.sid AND U.sid=?");
-		$getRoom->execute($sid);
+	//finds all pending and accepted reservations with user with userid $user_id
+	function hasRoom ($con, $user_id) {
+		$query = "SELECT R.roomname, R.room_id, O.room_id, U.user_id, O.start_time, O.end_time, R.computer, R.blackboard FROM Room R, Reservation O, User U WHERE R.room_id=O.room_id AND R.user_id=U.user_id AND U.user_id=?";
+		if($getRoom = $con->prepare($query)){
+			$getRoom->execute($user_id);
+		}
 		$rooms = $getRoom->fetchAll();
-
 		return $rooms;
 	 
 	  }
-	  $rooms = hasRoom($con, $sid);
+	  $rooms = hasRoom($con, $user_id);
 
 ?>
 
