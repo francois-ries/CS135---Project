@@ -115,10 +115,6 @@ console.log(hasComputer);
 console.log(hasBlackboard);
 console.log(capacity);
 
-document.getElementById("under_20").checked = true;
-document.getElementById("above_60").checked = false;
-
-
 
 </script>
 
@@ -160,27 +156,25 @@ document.getElementById("above_60").checked = false;
     <label for="RoomName">Room Name:</label>
     <input name="RoomName" class="form-control" id="RoomName">
   </div>
-  <div class="form-group">
-    <label for="RoomID">Room ID:</label>
-    <input name="RoomID" class="form-control" id="RoomID">
-  </div>
   <!-- <button type="submit" class="btn btn-default">Search</button> -->
   <input type="submit" class="btn btn-default">
 </form>
 </center>
 
-<center><p><i> Please enter the Room Name or Room ID</i></p></center>
+<center><p><i> Please enter the Room Name</i></p></center>
 
 <center>
 <div class="panel panel-primary">
   <div class="panel-heading">Room Selected</div>
-  <div class="panel-body"><?php echo $roomInfo_array["room_name"] ?></div>
+  <div class="panel-body"><?php if(isset($roomInfo_array["room_name"])) {
+    echo $roomInfo_array["room_name"];
+  } ?></div>
 </div>
 </center>
 
 <h3>Room Features: </h3>
 
-<form method="post">
+<form method="post" class="form-inline">
 
 <table>
 	<tbody>
@@ -206,30 +200,58 @@ document.getElementById("above_60").checked = false;
 </table>
 
 
-<table style="margin: 0px auto;" >
-		<tr>
-			<td><h3>Capacity</h3> </td>
-		</tr>
-		<tr>
-			<td><input type="checkbox" id="under_20" name="under_20" checked="false" > Under 20 </td>
-		</tr>
-		<tr>
-			<td><input type="checkbox" id="20-40" name="20-40" checked="false" > 20-40</td>
-		</tr>
-		<tr>
-			<td> <input type="checkbox" id="41-60" name="41-60" > 41-60 </td>
-		</tr>
-		<tr>
-			<td><input type="checkbox" id="above_60" name="above_60" > Above 60 </td>
-    </tr>
-</table>
+<center>
+
+<div class="form-group">
+    <label for="RoomName">Room Capacity:</label>
+    <input name="RoomCapacity" class="form-control" id="RoomCapacity" value="<?php if(isset($roomInfo_array["capacity"])) {
+      echo $roomInfo_array["capacity"]; 
+    } ?>">
+</div>
+
+ </center>
 
 <input type="submit" class="btn btn-default">
 <form>
 
 
-<!-- jQuerry Code -->
+<!-- PHP CODE PART II -->
+<?php
 
+
+$isComputer = 0;
+if(isset($_POST["computer"])) {
+  $isComputer = 1;
+}
+$isWhiteboard = 0;
+if(isset($_POST["whiteboard"])) {
+  $isWhiteboard = 1;
+}
+$isCapacity = 0;
+if(isset($_POST["RoomCapacity"])) {
+  $isCapacity = $_POST["RoomCapacity"];
+}
+
+echo "isCapacity ". $isCapacity;
+updateCapacity($con, $roomInfo_array["room_name"], $roomInfo_array["capacity"], $_POST["RoomCapacity"]);
+
+function updateCapacity ($con, $roomName, $oldCapacity, $newCapacity) {
+  //UPDATE room SET `capacity`= 40 WHERE room_name="BC23"
+
+  echo "Room Name ". $roomName."<br>";
+  echo "OldCapacity ". $oldCapacity."<br>";
+  echo "NewCapacity ". $newCapacity."<br>";
+
+  if ($oldCapacity != $newCapacity and $newCapacity != 0 ) {
+    $updateRoom = $con->prepare("UPDATE room SET capacity = ? WHERE room_name = ?");
+    $updateRoom->execute([$newCapacity, $roomName]);
+    echo "IT WORKED";
+  }
+
+
+}
+
+?>
 
 <!-- CSS -->
 <style>
