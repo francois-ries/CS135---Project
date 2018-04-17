@@ -29,7 +29,7 @@ print_r($_SESSION);
 	//finds all pending reservations
 	function hasRoomPending ($con) {
 
-		$getRoom = $con->prepare("SELECT R.roomname, R.room_id, O.room_id, U.user_id, O.start_time, O.end_time FROM Room R, Reservation O, User U WHERE R.room_id=O.room_id AND O.user_id=U.user_id AND O.approved=NULL");
+		$getRoom = $con->prepare("SELECT R.roomname, R.room_id, O.room_id, U.user_id, O.start_time, O.end_time FROM Room R, Reservation O, User U WHERE R.room_id=O.room_id AND O.user_id=U.user_id AND O.approved IS NULL");
 		$getRoom->execute();
 		$rooms = $getRoom->fetchAll();
 
