@@ -28,7 +28,6 @@ print_r($_SESSION);
 
 	//finds all accepted reservations
 	function hasRoomApproved ($con) {
-
 		$getRoom = $con->prepare("SELECT R.roomname, R.room_id, O.room_id, U.user_id, O.start_time, O.end_time FROM Room R, Reservation O, User U WHERE R.room_id=O.room_id AND O.user_id=U.user_id AND O.approved=TRUE");
 		$getRoom->execute();
 		$rooms = $getRoom->fetchAll();
@@ -69,7 +68,7 @@ print_r($_SESSION);
 
 	<body>
 		<h2>Current Reservations </h2>
-		<table width = 80%>
+		<table width = 80%, class="table table-striped">
 			<tr> 
 				<th>Room</th>
 				<th>Date and Time</th>
@@ -84,7 +83,7 @@ print_r($_SESSION);
 					$thisRoomUser = $array["user_id"];
  
 					echo "<tr><td>".$thisRoomName."</td>"; //room name
-					echo "<td>".$thisRoomStart." to ".$thisRoomEnd."</td>"; //time of reservation
+					echo "<td>".date("jS \of F, Y h:ia", strtotime($thisRoomStart))." to ".date("jS \of F, Y h:ia", strtotime($thisRoomEnd))."</td>"; //time of reservation
 					echo "<td>".$thisRoomUser."</td>"; //room user
 					echo "</tr>";
 				}
