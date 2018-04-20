@@ -36,19 +36,27 @@ print_r($_SESSION);
 		return $rooms;
 	 
 	}
+
 	  $rooms = hasRoomPending($con);
 
-	  foreach($rooms as $array){
-	  	$thisRoomId = $array["room_id"];
-	  	if(isset($_POST["accept".$thisRoomId])){
-	  		$acceptRoom = $con->prepare("UPDATE Reservation SET approved=TRUE WHERE rid=?");
-			$acceptRoom->execute($thisRoomId);
-	  	}
-	  	if(isset($_POST["deny".$thisRoomId])){
-	  		$denyRoom = $con->prepare("UPDATE Reservation SET approved=FALSE WHERE rid=?");
-			$denyRoom->execute($thisRoomId);
-	  	}
-	  }
+	if($_SERVER['REQUEST_METHOD'] == "POST"){
+		foreach($rooms as $array){
+			$thisRoomId = $array["room_id"];
+			if(isset($_POST["accept".$thisRoomId])){
+				echo "$thisRoomId";
+				$query = "UPDATE Reservation SET approved=TRUE WHERE room_id=?";
+				if($acceptRoom = $con->prepare($query)){
+					$acceptRoom->execute(array($thisRoomId));
+				}
+			}
+			if(isset($_POST["deny".$thisRoomId])){
+		  		$denyRoom = $con->prepare("UPDATE Reservation SET approved=FALSE WHERE room_id=?");
+				$denyRoom->execute(array($thisRoomId));
+	  		}
+		}
+	}
+	
+
 ?>
 
 	<head> 
@@ -81,7 +89,8 @@ print_r($_SESSION);
 
 	<body>
 		<h2>Current Reservations </h2>
-		<table width = 80%>
+		<form method="post">
+		<table width = 80%, class="table table-striped">
 			<tr> 
 				<th>Room</th>
 				<th>Date and Time</th>
@@ -97,12 +106,13 @@ print_r($_SESSION);
 					$thisRoomUser = $array["user_id"];
 
 					echo "<tr><td>".$thisRoomName."</td>"; //room name
-					echo "<td>".$thisRoomStart." to ".$thisRoomEnd."</td>"; //time of reservation
+					echo "<td>".date("jS \of F, Y h:ia", strtotime($thisRoomStart))." to ".date("jS \of F, Y h:ia", strtotime($thisRoomEnd))."</td>"; //time of reservation
 					echo "<td>".$thisRoomUser."</td>"; //room user
-					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept'/><input type='submit' name='deny".$thisRoomId."'value='Deny'/></td>";
+					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept'/>  <input type='submit' name='deny".$thisRoomId."'value='Deny'/></td>";
 					echo "</tr>";
 				}
 			
 			?>
 		</table>
+	</form>
 	</body>
