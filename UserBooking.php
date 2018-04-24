@@ -24,6 +24,7 @@
 
 <!-- DB CONNECTION -->
 <?PHP
+require 'PHPMailer.php';
 
 $servername = "localhost";
 $username = "root";
@@ -32,7 +33,6 @@ $password = "root";
 try {
     $con = new PDO("mysql:host=$servername;dbname=crs", $username, $password);
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    //echo "Connected successfully"; 
     }
 catch(PDOException $e)
     {
@@ -43,7 +43,7 @@ catch(PDOException $e)
 
 <!-- FORM -->
 <form method="post">
-
+<center><input id="date" type="date" name="date"></center>
 <table style="margin: 0px auto;">
   <tr>
     <th>Start Time</th>
@@ -52,6 +52,7 @@ catch(PDOException $e)
   <tr> 
     <td><input name="start_time" id="start_time" type="time"></td>
     <td><input name="end_time" id="end_time" type="time"></td> 
+  </tr>
   </tr>
 </table>
 
@@ -90,14 +91,24 @@ catch(PDOException $e)
 <?php
 
 // Assigne variables
+$selectDate = null;
+if (isset($_POST["date"])) {
+  $selectDate = $_POST["date"];
+}
 $start_time = null;
-if (isset($_POST["start_time"])) {
-  $start_time = trim($_POST["start_time"]);
+if (isset($_POST["start_time"]) && isset($_POST["date"]) ) {
+  $time = trim($_POST["start_time"]);
+  $start_time = date('Y-m-d H:i:s', strtotime("$selectDate $time"));
 }
 $end_time = null;
-if (isset($_POST["end_time"])) {
-  $end_time = trim($_POST["end_time"]);
+if (isset($_POST["end_time"]) && isset($_POST["date"])) {
+  $time = trim($_POST["end_time"]);
+  $end_time = date('Y-m-d H:i:s', strtotime("$selectDate $time"));
+  echo $end_time;
 }
+
+// // $combinedDT = date('Y-m-d H:i:s', strtotime("$date $time"));
+
 
 // Stores in array the if a specific box has been selected
 $formID_array = array ("computer"=>0, "RN"=>0, "under_20"=>0, "blackboard"=>0, "RS"=>0, "20-40"=>0, "BC"=>0, "41-60"=>0, "KS"=>0, "above_60"=>0);
@@ -142,6 +153,7 @@ $needBlackboard = null;
 
     //echo "room: ".$thisRoomID." Computer: ".$thisComputer." Blackboard: ".$thisBlackboard; 
   }
+}
 
   
   // Should returns an array with all the rooms complying with the campus location requirements of the user
@@ -183,9 +195,66 @@ $needBlackboard = null;
   $roomWithCapacity = array();
   hasCapacity($con, $formID_array, $roomWithCapacity);
 
+  function getRoomInfo($con, $roomID) {
+    
+  }
 
+  $userInfoArray = array();
+  getUserInfo($con,1, $userInfoArray);
+  //print_r($userInfoArray);
 
-}
+  // Creats an array with the information of a user given its userID 
+  function getUserInfo ($con, $userID, $userInfoArray) {
+    //SELECT `fname`, `lname`, `user_id`, `phone`, `email`, `password`, `admin` FROM `student` WHERE `user_id` = 1
+    $getInfo = $con->prepare("SELECT fname, lname, user_id, phone, email, password, admin FROM student WHERE user_id = ?");
+    $getInfo->execute([$userID]);
+    $results = $getInfo->fetchall();
+    global $userInfoArray;
+
+    foreach ($results as $array) {
+      $userInfoArray["fname"] = $array["fname"];
+      $userInfoArray["lname"] = $array["lname"];
+      $userInfoArray["user_id"] = $array["user_id"];
+      $userInfoArray["phone"] = $array["phone"];
+      $userInfoArray["email"] = $array["email"];
+      $userInfoArray["password"] = $array["password"];
+      $userInfoArray["admin"] = $array["admin"];
+    }
+
+  }
+
+  function getReservationInfo ($con, $ReservationInfo_array, $resID) {
+    //SELECT `res_id`, `timestamp`, `room_id`, `user_id`, `start_time`, `end_time`, `approved`, `message` 
+    //FROM `reservation` WHERE `user_id`=1
+
+    $getInfo = $con->prepare("SELECT res_id, timestamp, room_id, user_id, start_time, end_time, approved, message
+     FROM reservation WHERE res_id = ?");
+    $getInfo->execute([$resID]);
+    $results= $getInfo->fetchall();
+    global $ReservationInfo_array;
+
+    foreach ($results as $array) {
+      $ReservationInfo_array["res_id"] = $array["res_id"];
+      $ReservationInfo_array["timestamp"] = $array["timestamp"];
+      $ReservationInfo_array["room_id"] = $array["room_id"];
+      $ReservationInfo_array["user_id"] = $array["user_id"];
+      $ReservationInfo_array["start_time"] = $array["start_time"];
+      $ReservationInfo_array["end_time"] = $array["end_time"];
+      $ReservationInfo_array["approved"] = $array["approved"];
+    }
+  }
+
+  $ReservationInfo_array = array();
+  getReservationInfo($con, $ReservationInfo_array, "1");
+  //print_r($ReservationInfo_array);
+
+  function sendEmail ($userID, $resID) {
+    $msg = "Hi Mike,\n\nHere is the confirmation of your booking:\n\nRoom:";
+
+    //mail("fries19@cmc.edu","CS135",$msg);
+  }
+
+  sendEmail(1,1);
 
 ?>
 
@@ -220,4 +289,3 @@ $needBlackboard = null;
 
 
 </body></html>
-
