@@ -60,8 +60,8 @@ print_r($_SESSION);
 ?>
 
 	<head> 
-		<Title> Admin Main Page</Title>
-    	<meta name="description" content="Main admin page where admin can view all current reservations.">
+		<Title> Admin Pending Page</Title>
+    	<meta name="description" content="Page where admin can see all pending reservations.">
     	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -78,7 +78,7 @@ print_r($_SESSION);
 		    <ul class="nav navbar-nav">
 		      <li class="active"><a href="adminview.php">All Reservations</a></li>
 		      <li class="active"><a href="adminpending.php">Pending Reservations</a></li>
-		      <li class="active"><a href="adminupdates.php">Room Updates</a></li>
+		      <li class="active"><a href="AdminUpdateRoomFeatures.php">Room Updates</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
@@ -108,7 +108,7 @@ print_r($_SESSION);
 					echo "<tr><td>".$thisRoomName."</td>"; //room name
 					echo "<td>".date("jS \of F, Y h:ia", strtotime($thisRoomStart))." to ".date("jS \of F, Y h:ia", strtotime($thisRoomEnd))."</td>"; //time of reservation
 					echo "<td>".$thisRoomUser."</td>"; //room user
-					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept'/>  <input type='submit' name='deny".$thisRoomId."'value='Deny'/></td>";
+					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept' onClick='window.location.reload()'/>  <input type='submit' name='deny".$thisRoomId."'value='Deny' onClick='window.location.reload()'/></td>";
 					echo "</tr>";
 				}
 			
