@@ -3,21 +3,16 @@
   include_once("model/register_model.php");
 
   class RegisterController {
-    public $model;
- 
-    public function __construct()  {  
-      $this->model = new Model();
-    } 
 
-    public function invoke() {
+    public function register() {
       
-      $result = $this->model->register();  
+      $result = RegisterController::register();
   
       if ($result == 'success'){
         include_once( 'view/login.php');
       }
       else {
-        include_once( 'view/register.php');
+        include_once( 'view/error.php');
       }
     }
   }

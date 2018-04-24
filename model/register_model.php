@@ -5,7 +5,7 @@
 
 class RegisterModel {
 
-	public function register()
+	public static function register()
  	{
 
         if(isset($_POST['submit'])){
@@ -124,8 +124,10 @@ class RegisterModel {
                 mysqli_stmt_close($insert_user);
                 disconnect_from_db($conn, $insert_user);
 
-                return "registered";
+                return "success";
 
+            }else{
+                return "failed";
             }
 
         }

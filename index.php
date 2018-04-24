@@ -10,6 +10,7 @@
 
 
   // Look at url to see routing information 
+  
   if (isset($_GET['controller']) && isset($_GET['action'])) {
     echo "<br> controller and action is set";
   	$controller = $_GET['controller'];

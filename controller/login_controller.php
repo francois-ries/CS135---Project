@@ -1,18 +1,15 @@
 <?php
   session_start();
-  echo "<br> Login controller  is called.";
+  // echo "<br> Login controller  is called.";
   include_once("model/login_model.php");
   
   class LoginController {
-    // public $model
-    //public function __construct()  {  
-    //  $this->model = new LoginModel();
-    // } 
+  
     public function login() {
-      echo "<br> Login controller login function is called.";
-      // $model = new LoginModel();
-      // $result = $this->model->getlogin(); 
+      // echo "<br> Login controller login function is called.";
+      
       $result= LoginModel::getlogin();
+
       $_SESSION['result'] = $result;
 
       if ($result == 'register'){
@@ -30,9 +27,11 @@
       }
       else {
         echo "weird login: ".$result;
-        //include_once( 'view/login.php');
+        include_once( 'view/error.php');
       }
     }
+
+
     public function error() {
       // direct to error page
     

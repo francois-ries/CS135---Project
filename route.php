@@ -26,10 +26,10 @@
   // call('login', 'login');
 
   // we're adding an entry for the new controller and its actions
-  $controllers = array('login' => ['login','error'], //,
-                       'register' => ['register'] ,
-                       'search'=>['search'],
-                       'admin'=>['approve']
+  $controllers = array('login' => ['login'], //,
+                       'register' => ['register'] 
+                       //'search'=>['search'],
+                       //'admin'=>['approve']
                        // 'posts' => ['index', 'show']
                 );
 

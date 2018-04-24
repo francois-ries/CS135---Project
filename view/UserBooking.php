@@ -107,6 +107,64 @@ foreach ($formID_array as $key=>$value) {
   }
 }
 
+// campus location if selected all or none, dont care, if one -three selected either one is fine, roomsize is a must 
+$query = "SELECT room, room_id FROM room WHERE ";
+$state = false;
+// specify equipment
+if ($formID_array['computer'] == 1 ){
+  $query." computer == true";
+  $state = true;
+}
+
+if ($formID_array['blackboard'] == 1 ){
+  if ($state){
+    $query." AND ";    
+  }
+  $query." blackboard == true";
+  $state = true;
+}
+
+// room location 
+// 0 RS, 1 RN, 2 Bauer, 3 Kravis, 4 others 
+$location_array = array('RS'=>0, 'RN'=> 1, 'BC'=> 2, 'KS'=>3);
+$location_preference = $formID_array['RS'] + $formID_array['BC'] + $formID_array['RN']+$formID_array['KS'];
+if ($location_preference > 0  && $location_preference < 4){
+  // concatenate query, if state == false, nothing has specified. if true, something specified and then add AND  
+  if ($state){
+    $query." AND location IS IN ( ";    
+  }
+
+  // care location that is 1 
+  $location_state = false;
+  foreach ($location_array as $key=>$value){
+    if ($formID_array[$key] == 1 ){
+      if ($location_state){ 
+        $query." , ";
+      }
+      $query.$value; 
+      $location_state = true;
+    }
+  }
+
+  $query." ) "; 
+  $state = true;
+
+}
+
+// room-capacity 
+$room_capacity_array = array('20-40'=> "BETWEEN 20 AND 40", '41-60'=>"BETWEEN 41 AND 60",'above_60'=>"> 60",'under_20'=>"< 40");
+foreach ($room_capacity_array as $key=>$value) {
+  if ($formID_array[$key] == 1){
+    $query." AND room "; 
+    $query." " .$value." ";
+    break;
+  }
+}
+echo "The query: ".$query;
+
+
+
+
 // SQL STATEMENTS FOR THE ROOM SEARCH
 
 $roomWithEquipement = array();
