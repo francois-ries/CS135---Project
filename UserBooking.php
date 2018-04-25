@@ -107,7 +107,7 @@ if (isset($_POST["end_time"]) && isset($_POST["date"])) {
   echo $end_time;
 }
 
-// // $combinedDT = date('Y-m-d H:i:s', strtotime("$date $time"));
+// $combinedDT = date('Y-m-d H:i:s', strtotime("$date $time"));
 
 
 // Stores in array the if a specific box has been selected
@@ -117,6 +117,88 @@ foreach ($formID_array as $key=>$value) {
     $formID_array[$key] = 1;
   }
 }
+
+function build_search_query($con, $formID_array, $start_time, $end_time ){
+  
+  // campus location if selected all or none, dont care, if one -three selected either one is fine, roomsize is a must 
+  $state = false;
+  // global $query ;
+  $query= "SELECT roomname, room_id FROM room WHERE";
+  // echo "<br>The query: ".$query;
+
+  // $query = $query." WHERE ";
+  // specify equipment
+  if ($formID_array['computer'] == 1 ){
+    $query = $query." computer IS TRUE";
+    $state = true;
+  }
+
+  if ($formID_array['blackboard'] == 1 ){
+    if ($state){
+      $query = $query." AND ";    
+    }
+    $query = $query." blackboard IS TRUE";
+    $state = true;
+  }
+  // echo "<br>The query: ".$query;
+
+  // room location 
+  // 0 RS, 1 RN, 2 Bauer, 3 Kravis, 4 others 
+  $location_array = array('RS'=>0, 'RN'=> 1, 'BC'=> 2, 'KS'=>3);
+  $location_preference = $formID_array['RS'] + $formID_array['BC'] + $formID_array['RN']+$formID_array['KS'];
+  if ($location_preference > 0  && $location_preference < 4){
+    // concatenate query, if state == false, nothing has specified. if true, something specified and then add AND  
+    if ($state){
+      $query = $query." AND  ";    
+    }
+
+    // care location that is 1 
+    $location_state = false;
+    $query = $query." location IN ( ";    
+    foreach ($location_array as $key=>$value){
+      if ($formID_array[$key] == 1 ){
+        if ($location_state){ 
+          $query = $query." , ";
+        }
+        $query = $query.$value; 
+        $location_state = true;
+      }
+    }
+
+    $query = $query." ) "; 
+    $state = true;
+
+  }
+
+  // room-capacity 
+  $room_capacity_array = array('20-40'=> "BETWEEN 20 AND 40", '41-60'=>"BETWEEN 41 AND 60",'above_60'=>"> 60",'under_20'=>"< 20");
+  foreach ($room_capacity_array as $key=>$value) {
+    if ($formID_array[$key] == 1){
+      if ($state){
+        $query = $query." AND ";    
+      }
+      $query = $query." capacity   " .$value." ";
+      
+      break;
+      
+    }
+  }
+
+  $query = $query."AND room_id NOT IN ( SELECT room.room_id 
+                                    FROM room 
+                                    JOIN reservation 
+                                    on room.room_id = reservation.room_id 
+                                    where not (end_time <=  '".$start_time."' or start_time >= '".$end_time."'))";
+                                     
+  // echo "<br>The query: ".$query;
+  // echo "<br>The state: ".$state;
+  return $query;
+}
+
+$search_query = build_search_query($con, $formID_array, $start_time, $end_time);
+echo "<br>The query: ".$search_query;
+
+
 
 // SQL STATEMENTS FOR THE ROOM SEARCH
 
