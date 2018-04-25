@@ -76,9 +76,9 @@ print_r($_SESSION);
 		      <a class="navbar-brand" href="#">CMC Room Reservations</a>
 		    </div>
 		    <ul class="nav navbar-nav">
-		      <li class="active"><a href="adminview.php">All Reservations</a></li>
+		      <li><a href="adminview.php">All Reservations</a></li>
 		      <li class="active"><a href="adminpending.php">Pending Reservations</a></li>
-		      <li class="active"><a href="AdminUpdateRoomFeatures.php">Room Updates</a></li>
+		      <li><a href="AdminUpdateRoomFeatures.php">Room Updates</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
