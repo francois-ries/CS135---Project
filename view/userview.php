@@ -11,7 +11,7 @@ print_r($_SESSION);
 	if (isset($_SESSION['userid'])) {
 		$user_id = $_SESSION['userid'];
  	}
- 	$user_id="40416925";
+ 	$user_id="30322200";
 
  	$servername = "localhost";
 	$username = "root";
@@ -96,7 +96,7 @@ print_r($_SESSION);
 					}
 					echo "<tr><td>".$thisRoomName."</td>"; //room name
 					echo "<td>Add date here </td>"; //date of reservation
-					echo "<td>".$thisRoomStart."to".$thisRoomEnd."</td>"; //time of reservation
+					echo "<td>".date("jS \of F, Y h:ia", strtotime($thisRoomStart))."to".date("jS \of F, Y h:ia", strtotime($thisRoomEnd))."</td>"; //time of reservation
 					echo "<td> Computer: ".$thisRoomComputer." Blackboard: ".$thisRoomBlackboard."</td>"; //room features
 					echo "<td>".$status."</td>"; //status of resrervation
 					echo "<td><input type='submit' name='cancel".$thisRoomId."value='Cancel'/></td>"; //cancel reservation
