@@ -188,7 +188,7 @@ function build_search_query($con, $formID_array, $start_time, $end_time ){
                                     FROM room 
                                     JOIN reservation 
                                     on room.room_id = reservation.room_id 
-                                    where not (end_time <=  '".$start_time."' or start_time >= '".$end_time."'))";
+                                    where DATE(start_time) = DATE(". $start_time.") not (end_time <=  '".$start_time."' or start_time >= '".$end_time."'))";
                                      
   // echo "<br>The query: ".$query;
   // echo "<br>The state: ".$state;
@@ -197,7 +197,6 @@ function build_search_query($con, $formID_array, $start_time, $end_time ){
 
 $search_query = build_search_query($con, $formID_array, $start_time, $end_time);
 echo "<br>The query: ".$search_query;
-
 
 
 // SQL STATEMENTS FOR THE ROOM SEARCH

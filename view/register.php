@@ -1,7 +1,7 @@
 <?php
 echo $result; 
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="en" class="gr__getbootstrap_com" http-equiv="Content-Type"> 
@@ -35,7 +35,7 @@ echo $result;
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="firstName">First name</label>
-                                <input type="text" class="form-control" id="firstname" name="firstname" placeholder=""  required="">
+                                <input type="text" class="form-control" id="firstname" name="firstname" placeholder=""  value = "Wenonah" required="">
                                 <div class="invalid-feedback">
                                 Valid first name is required.
                                 </div>
@@ -43,7 +43,7 @@ echo $result;
 
                             <div class="col-md-6 mb-3">
                                 <label for="lastName">Last name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName"  placeholder=""  required="">
+                                <input type="text" class="form-control" id="lastName" name="lastName"  placeholder="" value = "Zhang" required="">
                                 <div class="invalid-feedback">
                                     Valid last name is required.
                                 </div>
@@ -52,7 +52,7 @@ echo $result;
 
                         <div class="mb-3">
                             <label for="userid">Student ID <span class="text-muted"></span></label>
-                            <input type="text" class="form-control" id="userid" name='userid' placeholder="30316074" >
+                            <input type="text" class="form-control" id="userid" name='userid' value="30316074" placeholder="30316074" >
                             <div class="invalid-feedback">
                                 Please enter a valid student id.
                             </div>
@@ -60,7 +60,7 @@ echo $result;
 
                         <div class="mb-3">
                             <label for="email">Email </label>
-                            <input type="email" class="form-control" id="email" name ='email' placeholder="you@example.com" >
+                            <input type="email" class="form-control" id="email" name ='email' value="you@example.com" placeholder="you@example.com" >
                             <div class="invalid-feedback">
                                 Please enter a valid email address for reservation updates.
                             </div>
@@ -68,7 +68,7 @@ echo $result;
                         
                         <div class="mb-3">
                             <label for="phone">Phone <span class="text-muted"></span></label>
-                            <input type="text" class="form-control" id="phone" name='phone' placeholder="000-000-0000" >
+                            <input type="text" class="form-control" id="phone" name='phone' value= "0000000000" placeholder="000-000-0000" >
                             <div class="invalid-feedback">
                                 Please enter a valid phone number for reservation updates.
                             </div>
@@ -77,7 +77,7 @@ echo $result;
 
                         <div class="mb-3">
                             <label for="password">Password <span class="text-muted"></span></label>
-                            <input type="text" class="form-control" id="password" name='password' >
+                            <input type="text" class="form-control" id="password" value = "wenoz" name='password' >
                             <div class="invalid-feedback">
                                 Please enter a password.
                             </div>
@@ -85,7 +85,7 @@ echo $result;
 
                         <div class="mb-3">
                             <label for="cpassword">Confirm Password <span class="text-muted"></span></label>
-                            <input type="text" class="form-control" id="cpassword" name='cpassword' >
+                            <input type="text" class="form-control" id="cpassword" value = "wenoz" name='cpassword' >
                             <div class="invalid-feedback">
                                 Please confirm the password.
                             </div>
@@ -93,7 +93,7 @@ echo $result;
 
                         <h4 class="mb-3">To register as admin, please enter admin key.</h4>
                         <div class="mb-3">
-                            <label for="admin">Admin Key<span class="text-muted"></span></label>
+                            <label for="key">Admin Key<span class="text-muted"></span></label>
                             <input type="text" class="form-control" id="key" name='key' >
                             <div class="invalid-feedback">
                                 Please enter admin code if you are registering an admin account.

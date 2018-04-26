@@ -27,7 +27,7 @@
   echo "<br> controller ".$controller;
   echo "<br>action ".$action;
   require_once('route.php'); 
-  require_once('view/login.php'); 
+  //require_once('view/login.php'); 
   
 
 ?>

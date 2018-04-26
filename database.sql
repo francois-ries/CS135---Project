@@ -32,7 +32,7 @@ CREATE TABLE Reservation (
     end_time DATETIME NOT NULL,
     approved BOOLEAN DEFAULT NULL, -- FAULT PENDING IS NULL, APPROVED TRUE, REJECT FALSE 
     message TEXT,
-    PRIMARY KEY (res_id).
+    PRIMARY KEY (res_id),
     FOREIGN KEY (room_id) REFERENCES Room(room_id),
     FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
