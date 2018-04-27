@@ -13,11 +13,34 @@
 
     <!-- Custom styles for this template -->
     <link href="css/sticky-footer.css" rel="stylesheet">
-   <!-- <link href="css/grid.css" rel="stylesheet"> -->
+    <link href="/css/grid.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <link href="css/UserBookingStyle.css" rel="stylesheet">
 
 </head>
+
+<header>
+		<!---creates a navigator which links to main page or reservation page-->
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#">CMC Room Reservations</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+              <li><a href="userview.php">Current Reservations</a></li>
+              <li ><a href="AdminUpdateRoomFeatures.php">Update Room Features</a></li>
+		          <li class="active" ><a href="UserBooking.php">Make A Reservation</a></li>
+        </ul>
+		    <ul class="nav navbar-nav navbar-right">
+		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
+		    </ul>
+		  </div>
+		</nav>
+</header>
+
 <center><h1 text-align:"center">Make A Reservation</h1></center>
 <body>
 
