@@ -1,0 +1,22 @@
+th, td {
+    padding: 15px;
+    text-align: center; 
+    vertical-align:middle;
+}
+
+.btn {
+    -webkit-border-radius: 11;
+    -moz-border-radius: 11;
+    border-radius: 11px;
+    font-family: Arial;
+    color: #262bbd;
+    font-size: 13px;
+    background: #3498db;
+    padding: 11px 20px 10px 20px;
+    text-decoration: none;
+  }
+  
+  .btn:hover {
+    background: #3cb0fd;
+    text-decoration: none;
+  }
