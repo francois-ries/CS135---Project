@@ -1,5 +1,5 @@
 <?php
-echo $result; 
+// echo $result; 
 
 ?>
 
@@ -7,7 +7,7 @@ echo $result;
 <html lang="en" class="gr__getbootstrap_com" http-equiv="Content-Type"> 
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Checkout</title>
+        <title>Register</title>
         <!-- <link rel="stylesheet" href="layout.css"> -->
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -102,7 +102,7 @@ echo $result;
                                                               
                                     
                     <hr class="mb-4">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" id = 'submit' name = 'submit'>Register</button>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" id = 'register_submit' name = 'register_submit'>Register</button>
                 </form>
             </div>  
         </div>

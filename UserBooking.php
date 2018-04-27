@@ -42,6 +42,7 @@ catch(PDOException $e)
 ?>
 
 <!-- FORM -->
+<!-- FORM -->
 <form method="post">
 <center><input id="date" type="date" name="date"></center>
 <table style="margin: 0px auto;">
@@ -55,7 +56,6 @@ catch(PDOException $e)
   </tr>
   </tr>
 </table>
-
 
 <table style="margin: 0px auto;" >
 		<tr>

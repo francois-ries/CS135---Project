@@ -1,8 +1,7 @@
 <?php
 session_start(); 
 class RegisterModel {
-
-    public function validation(){
+    public static function validation(){
         //validation 
         // $validated = true;
         $fname=trim($_POST["firstname"]);
@@ -50,8 +49,8 @@ class RegisterModel {
             // if( mysqli_stmt_fetch($check_whether_created_stmt->fetch()){
             if ($userid){
                 echo "<br> The Userid has already registered";
-                // return "user existed";
-                return false;
+                return "user existed";
+                // return "false";
                 // $validated = false;
             }else{                  
                 echo "<script>$('#userid').addClass('was-validated')</script>";                    
@@ -110,7 +109,7 @@ class RegisterModel {
     
     }
     
-    public function insert_user (){
+    public static function insert_user (){
         $fname=trim($_POST["firstname"]);
         $lname=trim($_POST["lastname"]);
         $userid=trim($_POST['userid']);
@@ -138,7 +137,7 @@ class RegisterModel {
         $insert_user = mysqli_prepare($conn, $insert_query);
     
         // mysqli_stmt_bind_param($insert_user,"ssssss", $fname, $lname, $user_id, $email, $phone, password_hash($password, PASSWORD_DEFAULT)); // hash the password
-        mysqli_stmt_bind_param($insert_user,"ssssss", $fname, $lname, $user_id, $email, $phone, $password); 
+        mysqli_stmt_bind_param($insert_user,"ssssss", $fname, $lname, $userid, $email, $phone, $password); 
         // $insert_user->execute();
         
         mysqli_stmt_execute($insert_user);
@@ -167,22 +166,28 @@ class RegisterModel {
 
 
     public static function get_register(){
+        echo " entered get register";
             
-        if(isset($_POST['submit'])){
-            $validated = validation();
+        //if(isset($_POST['register_submit'])){
+            $validated = RegisterModel::validation();
             if ($validated == true){
-                $db_insert = insert_user (); 
+                $db_insert = RegisterModel::insert_user(); 
                 if ($db_insert== true){
+                    echo "success registered ";
                     return 'success';
                 }else{
+                    echo "failed registered ";
                     return'failed';
                 }
             }
-            else{
+            else if ($validated == true){
+                echo "validation did not pass";
+                return "user existed";
+            } else{
                 echo "validation did not pass";
                 return "failed";
             }
-        }
+        //}
     }
         		
 }

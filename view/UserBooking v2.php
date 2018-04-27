@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
 
     <title>Sticky Footer Template for Bootstrap</title>
 
@@ -15,6 +14,7 @@
     <!-- Custom styles for this template -->
     <link href="./Sticky Footer Template for Bootstrap_files/sticky-footer.css" rel="stylesheet">
     <link href="grid.css" rel="stylesheet">
+    
 
     <link href="UserBookingStyle.css" rel="stylesheet">
 

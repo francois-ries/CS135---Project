@@ -1,5 +1,5 @@
 <?php 
-	echo "<br>result : ".$_SESSION['result'];
+	//echo "<br>result : ".$_SESSION['result'];
 
 ?>
 

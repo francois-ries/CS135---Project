@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
 
-    <title>Sticky Footer Template for Bootstrap</title>
+    <title>Make a Reservation</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="./Sticky Footer Template for Bootstrap_files/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="./Sticky Footer Template for Bootstrap_files/sticky-footer.css" rel="stylesheet">
-    <link href="grid.css" rel="stylesheet">
+    <link href="css/sticky-footer.css" rel="stylesheet">
+   <!-- <link href="css/grid.css" rel="stylesheet"> -->
 
-    <link href="UserBookingStyle.css" rel="stylesheet">
+    <link href="css/UserBookingStyle.css" rel="stylesheet">
 
 </head>
 <center><h1 text-align:"center">Make A Reservation</h1></center>
@@ -42,8 +41,9 @@ catch(PDOException $e)
 ?>
 
 <!-- FORM UserBooking.php action = "#" -->
-<form method="post" >
-
+<!-- FORM -->
+<form method="post">
+<center><input id="date" type="date" name="date"></center>
 <table style="margin: 0px auto;">
   <tr>
     <th>Start Time</th>
@@ -53,8 +53,8 @@ catch(PDOException $e)
     <td><input name="start_time" id="start_time" type="time"></td>
     <td><input name="end_time" id="end_time" type="time"></td> 
   </tr>
+  </tr>
 </table>
-
 
 <table style="margin: 0px auto;" >
 		<tr>
@@ -90,13 +90,21 @@ catch(PDOException $e)
 <?php
 
 // Assigne variables
+
+$selectDate = null;
+if (isset($_POST["date"])) {
+  $selectDate = $_POST["date"];
+}
 $start_time = null;
-if (isset($_POST["start_time"])) {
-  $start_time = trim($_POST["start_time"]);
+if (isset($_POST["start_time"]) && isset($_POST["date"]) ) {
+  $time = trim($_POST["start_time"]);
+  $start_time = date('Y-m-d H:i:s', strtotime("$selectDate $time"));
 }
 $end_time = null;
-if (isset($_POST["end_time"])) {
-  $end_time = trim($_POST["end_time"]);
+if (isset($_POST["end_time"]) && isset($_POST["date"])) {
+  $time = trim($_POST["end_time"]);
+  $end_time = date('Y-m-d H:i:s', strtotime("$selectDate $time"));
+  echo $end_time;
 }
 
 // Stores in array the if a specific box has been selected

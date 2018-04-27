@@ -1,33 +1,43 @@
 <?php
   session_start();
-  include_once("model/register_model.php");
+  require_once("model/register_model.php");
 
   class RegisterController {
 
     public function register() {
-      
-      $result = RegisterController::get_register();
-  
-      if ($result == 'success'){
-        
-        include_once( 'view/login.php');
-        printf( "register success");
+      //include_once('view/register.php');
+      echo "called register controller register function";
 
-        call('login', 'login');
+      if(isset($_POST['register_submit'])){
+      
+        $result = RegisterModel::get_register();
+    
+        if ($result == 'success'){
+          
+          // include_once( 'view/login.php');
+          echo "register success";
+
+          return call('login', 'login');
+        }
+
+        else if ($result == 'failed') {
+          // include_once( 'view/error.php');
+          echo  "register failed";
+          
+          return call('register', 'register');
+        }
+
+        else if ($result == 'user existed') {
+          // include_once( 'view/login.php');
+          echo  "user existed";
+          return call('login', 'login');
+          
+        }
       }
-      else if ($result == 'failed') {
-        include_once( 'view/error.php');
-        print( "register failed");
-        
-        // call('login', 'error');
-      }
-      else if ($result == 'user existed') {
-        
-        include_once( 'view/login.php');
-        print( "user existed");
-        call('login', 'login');
-      }else{
-        call('login', 'error');
+      else{
+
+        include_once("view/register.php");
+
       }
     }
   }
