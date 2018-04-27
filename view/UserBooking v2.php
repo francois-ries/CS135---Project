@@ -30,7 +30,7 @@
 		    </div>
 		    <ul class="nav navbar-nav">
               <li><a href="userview.php">Current Reservations</a></li>
-              <li ><a href="AdminUpdateRoomFeatures.php">Update Room Features</a></li>
+              <li ><a href="AdminUpdateRoomFeatures.php">Update Room Features</a></li>s
 		          <li class="active" ><a href="UserBooking.php">Make A Reservation</a></li>
         </ul>
 		    <ul class="nav navbar-nav navbar-right">

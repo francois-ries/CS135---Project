@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <!-- saved from url=(0057)https://getbootstrap.com/docs/4.0/examples/sticky-footer/ -->
+
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <head>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -9,16 +11,16 @@
     <title>Make a Reservation</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sticky-footer.css" rel="stylesheet">
-    <link href="/css/grid.css" rel="stylesheet">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="../css/sticky-footer.css" rel="stylesheet">
+    <link href="../css/grid.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <link href="css/UserBookingStyle.css" rel="stylesheet">
+    <link href="../css/UserBookingStyle.css" rel="stylesheet">
 
 </head>
 
@@ -30,8 +32,8 @@
 		      <a class="navbar-brand" href="#">CMC Room Reservations</a>
 		    </div>
 		    <ul class="nav navbar-nav">
-              <li><a href="userview.php">Current Reservations</a></li>
-              <li ><a href="AdminUpdateRoomFeatures.php">Update Room Features</a></li>
+              	<!--- <li><a href="userview.php">Current Reservations</a></li> --> 
+              <!--- <li ><a href="AdminUpdateRoomFeatures.php">Update Room Features</a></li> -->
 		          <li class="active" ><a href="UserBooking.php">Make A Reservation</a></li>
         </ul>
 		    <ul class="nav navbar-nav navbar-right">
