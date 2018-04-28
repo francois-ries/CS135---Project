@@ -11,10 +11,8 @@
 
       if ($result == 'register'){
         header('Location: http://localhost:8888/CS135---Project/?controller=register&action=register');
-        include "view/register.php";
-         
-        // return call('register', 'register');
-          
+        include_once("view/register.php");
+        
       }
 
       else if($result == 'login') {
@@ -39,12 +37,15 @@
       }
 
       else if ($result == "invalid user"){
-        echo "<a text-align ='center' color = 'red'>Invalid login <a>  ";
+        // echo "<div text-align ='center' color = 'red'>Invalid login <div>  ";      
         include_once("view/login.php");
+        echo "<script>document.getElementById('message').innerHTML = 'Invalid Login';</script>";
+        // echo "<script>  $('#message').text('Invalid Login'); <script>";
       }
       
       else{
         // echo "include view login ";
+        echo "<script>document.getElementById('message').innerHTML = 'Something is wrong';</script>";
         include_once('view/login.php'); 
         // return call('login', 'login');
       }

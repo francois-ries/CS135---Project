@@ -1,7 +1,3 @@
-<?php 
-	//echo "<br>result : ".$_SESSION['result'];
-	require_once('routes.php'); 
-?>
 
 <!DOCTYPE html>
 <html lang="en" class="gr__getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -47,8 +43,9 @@
 
   <body class="text-center" data-gr-c-s-loaded="true">
 
-
 	<form class="form-signin" method ='post'>
+	<span  id="message"></span> 
+
 	  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 	  <!-- <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1> --> 
 

@@ -15,23 +15,21 @@ class RegisterModel {
         
         if (!preg_match("/^[a-zA-Z]*$/",$fname)){  
             // $validated = false;
-            echo "<br> Invalid First Name";
+            // echo "<br> Invalid First Name";
             return 3;
         }else{
             echo "<script>$('#firstname').addClass('was-validated')</script>";
         }
         if (!preg_match("/^[a-zA-Z]*$/",$lname)){
             // $validated = false;
-            echo "<br> Invalid Last Name";
+            // echo "<br> Invalid Last Name";
             return 3;
         }else{
             echo "<script>$('#lastname').addClass('was-validated')</script>";
         }
         
         if (!preg_match("/^[0-9]{8}/",$userid)){
-            echo "<br> $userid";
-            // $validated = false;
-            echo "<br> Invalid User Id ";
+            echo "<script>document.getElementById('validation_message').innerHTML = 'Invalid User Id';</script>";
             return 3;
         }else{
              // check whether the id has already created an account
@@ -48,7 +46,8 @@ class RegisterModel {
             
             // if( mysqli_stmt_fetch($check_whether_created_stmt->fetch()){
             if ($userid){
-                echo "<br> The Userid has already registered";
+                echo "<script>document.getElementById('validation_message').innerHTML = '';</script>";
+                // echo "<br> The Userid has already registered";
                 return 2;
                 // return "false";
                 // $validated = false;
@@ -57,15 +56,17 @@ class RegisterModel {
             }
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            // $validated = false;
-            echo "<br> Invalid Email";
+
+            echo "<script>document.getElementById('validation_message').innerHTML = 'Invalid Email';</script>";;
+            //echo "<br> Invalid Email";
             return 3;
         }else{
             echo "<script>$('#email').addClass('was-validated')</script>";
         }
         if(!preg_match("/^[0-9]{3}[0-9]{3}[0-9]{4}$/", $phone)) {
-            // $validated = false;
-            echo "<br> Invalid Phone";
+            // $validated = false
+            echo "<script>document.getElementById('validation_message').innerHTML = 'Invalid Phone';</script>";;
+            // echo "<br> Invalid Phone";
             return 3;
         }else{
             echo "<script>$('#phone').addClass('was-validated')</script>";
@@ -82,7 +83,7 @@ class RegisterModel {
     
         if ($password != $cpassword){
             //$validated = false;
-            echo "<br> Please confirm your password";
+            echo "<script>document.getElementById('validation_message').innerHTML = 'Please confirm your password';</script>";
             return 3;
         }else{
             echo "<script>$('#cpassword').addClass('was-validated')</script>";
@@ -90,7 +91,7 @@ class RegisterModel {
         }
     
         if (!$adminkey ){
-            echo "<br> Not a admin register";
+            // echo "<br> Not a admin register";
             $admin = false;
             echo "<script>$('#cpassword').addClass('was-validated')</script>";
             $_POST["admin"] = 0;  
@@ -100,9 +101,8 @@ class RegisterModel {
             echo "<script>$('#cpassword').addClass('was-validated')</script>";
             $_POST["admin"] = 1;  
         }else{
-            //$validated = false;
+            echo "<script>document.getElementById('validation_message').innerHTML = 'Wrong Admin Key';</script>";
             return 3;
-            echo "<br> Wrong Admin Key";
         }
     
         return 1;
@@ -173,29 +173,24 @@ class RegisterModel {
 
 
     public static function get_register(){
-        echo " entered get register";
-        echo "<br> called get_register ";
         if(isset($_POST['register_submit'])){
-            echo "<br> called register submit function";
-            
-        //if(isset($_POST['register_submit'])){
             $validated = RegisterModel::validation();
-            echo "<br> called validation function";
+            
             if ($validated == 1){
                 $db_insert = RegisterModel::insert_user(); 
                 if ($db_insert== true){
-                    echo "success registered ";
+                    // echo "success registered ";
                     return 'success';
                 }else{
-                    echo "failed registered ";
+                    // echo "failed registered ";
                     return'failed';
                 }
             }
             else if ($validated == 2){
-                echo "validation did not pass";
+                // echo "validation did not pass";
                 return "user existed";
             } else{
-                echo "validation did not pass";
+                // echo "validation did not pass";
                return "failed";
             }
         }

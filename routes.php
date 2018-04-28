@@ -1,11 +1,7 @@
 <?php
   function call($controller, $action) {
-    // echo '<br> controller/' . $controller . '_controller.php';
-    // $_GET['controller'] =  $controller ;
-    // $_GET['action'] = $action;    
-    require_once('controller/' . $controller . '_controller.php');
-    // echo '<br>included controller ';
 
+    require_once('controller/' . $controller . '_controller.php');
 
     switch($controller) {
       case 'login':
@@ -13,12 +9,9 @@
  
       break;
       case 'register':
-        // we need the model to query the database later in the controller
-        //
         $controller = new RegisterController();
       break;
     }
-    //echo "<br> called controller";
     
     $controller->{$action}();
   }
@@ -36,7 +29,6 @@
     }
   }else {
     call('login', 'error');
-    // call('login', 'error');
   }
 
 ?>

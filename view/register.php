@@ -1,7 +1,3 @@
-<?php
-// echo $result; 
-
-?>
 
 <!DOCTYPE html>
 <html lang="en" class="gr__getbootstrap_com" http-equiv="Content-Type"> 
@@ -28,6 +24,7 @@
         <div class="container" id = 'ajax_comp'>
             <div class="py-5 text-center">
                 <h2>Register</h2>
+                <span id= 'register_message'></span>
             </div>
 
             <!-- Customer Information and Validation  -->
@@ -46,7 +43,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label for="lastName">Last name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName"  placeholder="" value = "Zhang" required="">
+                                <input type="text" class="form-control" id="lastname" name="lastname"  placeholder="" value = "Zhang" required="">
                                 <div class="invalid-feedback">
                                     Valid last name is required.
                                 </div>
