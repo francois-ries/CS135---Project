@@ -50,28 +50,29 @@ if(isset($_POST["computer"])) {
   $isComputerSet = 1;
 }
 
-$isUnder20 = 0;
-if(isset($_POST["under_20"])) {
-  $isUnder20 = 1;
-}
-
-$is20_40 = 0;
-if(isset($_POST["20-40"])) {
-  $is20_40 = 1;
-}
-
-$is41_60 = 0;
-if(isset($_POST["41-60"])) {
-  $is41_60 = 1;
-}
-
-$isAbove60 = 0;
-if(isset($_POST["above_60"])) {
-  $isAbove60 = 1;
-}
-
 $roomInfo_array = array();
-getRoomInfo($con, $roomInfo_array, $roomName);
+//getRoomInfo($con, $roomInfo_array, $roomName);
+
+if (isInDB($con, $roomName)) {
+  getRoomInfo($con, $roomInfo_array, $roomName);
+}
+
+function isInDB($con, $roomName) {
+    //SELECT `room_id` WHERE `room_name`="test"
+    if ($roomName != null) {
+      $getRoom = $con->prepare("SELECT room_id FROM room WHERE room_name = ?");
+      $getRoom->execute([$roomName]);
+      $results = $getRoom->fetch();
+
+      if (!$results) {
+        //echo "NULL";
+        return false;
+      } else {
+        //echo "NOT NULL";
+        return true;
+      }
+    }
+}
 
 // Returns an array with all the info of a given room name 
 //  Need to fix: check if the rooms exist before sending the SQL query
@@ -116,6 +117,8 @@ console.log(hasBlackboard);
 console.log(capacity);
 
 
+
+
 </script>
 
 	<head> 
@@ -136,9 +139,9 @@ console.log(capacity);
 		      <a class="navbar-brand" href="#">CMC Room Reservations</a>
 		    </div>
 		    <ul class="nav navbar-nav">
-		      <li><a href="adminview.php">All Reservations</a></li>
-		      <li><a href="adminpending.php">Pending Reservations</a></li>
-		      <li class="active"><a href="AdminUpdateRoomFeatures.php">Room Updates</a></li>
+              <li><a href="userview.php">Current Reservations</a></li>
+              <li class="active"><a href="AdminUpdateRoomFeatures.php">Update Room Features</a></li>
+		      <li><a href="UserBooking.php">Make A Reservation</a></li>
             </ul>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
@@ -162,6 +165,7 @@ console.log(capacity);
 </center>
 
 <center><p><i> Please enter the Room Name</i></p></center>
+<center><p> <?PHP if (!isInDB($con, $roomName)) {echo "This room doesn't exist";} ?> </p><center>
 
 <center>
 <div class="panel panel-primary">
@@ -176,13 +180,16 @@ console.log(capacity);
 
 <form method="post" class="form-inline">
 
+
+<input hidden name="RoomName" value ="<?php if(isset($roomInfo_array["room_name"])) {echo $roomInfo_array["room_name"];} ?>"> </input>
+
 <table>
 	<tbody>
 		<tr>
 			<td> Whiteboard </td>
 			<td>
       <label class="switch">
-      <input name="whiteboard" id="whiteboard" type="checkbox">
+      <input name="whiteboard" id="whiteboard" <?php if (isset($roomInfo_array["blackboard"])) {if ($roomInfo_array["blackboard"] == 1) echo "checked"; else echo "unchecked";}?> type="checkbox">
        <span class="slider round"></span>
       </label> 
     </td>
@@ -191,7 +198,7 @@ console.log(capacity);
 			<td>Computer</td>
 			<td>
       <label class="switch">
-      <input name="computer" id="computer" type="checkbox">
+      <input name="computer" id="computer" <?php if (isset($roomInfo_array["computer"])) {if ($roomInfo_array["computer"] == 1) echo "checked"; else echo "unchecked";} ?> type="checkbox">
        <span class="slider round"></span>
       </label> 
       </td>
@@ -201,14 +208,12 @@ console.log(capacity);
 
 
 <center>
-
 <div class="form-group">
     <label for="RoomName">Room Capacity:</label>
     <input name="RoomCapacity" class="form-control" id="RoomCapacity" value="<?php if(isset($roomInfo_array["capacity"])) {
       echo $roomInfo_array["capacity"]; 
     } ?>">
 </div>
-
  </center>
 
 <input type="submit" class="btn btn-default">
@@ -232,24 +237,59 @@ if(isset($_POST["RoomCapacity"])) {
   $isCapacity = $_POST["RoomCapacity"];
 }
 
-echo "isCapacity ". $isCapacity;
-updateCapacity($con, $roomInfo_array["room_name"], $roomInfo_array["capacity"], $_POST["RoomCapacity"]);
+if (!isset($roomName)) {
+  global $roomName;
+  if(isset($roomInfo_array["room_name"])){
+   $roomName = $roomInfo_array["room_name"];
+  }
+}
+
+
+if (isset($_POST["RoomCapacity"])) {
+  updateCapacity($con, $roomName, $roomInfo_array["capacity"], $isCapacity);
+}
 
 function updateCapacity ($con, $roomName, $oldCapacity, $newCapacity) {
   //UPDATE room SET `capacity`= 40 WHERE room_name="BC23"
 
-  echo "Room Name ". $roomName."<br>";
-  echo "OldCapacity ". $oldCapacity."<br>";
-  echo "NewCapacity ". $newCapacity."<br>";
-
-  if ($oldCapacity != $newCapacity and $newCapacity != 0 ) {
-    $updateRoom = $con->prepare("UPDATE room SET capacity = ? WHERE room_name = ?");
-    $updateRoom->execute([$newCapacity, $roomName]);
-    echo "IT WORKED";
+  if ($newCapacity <= 0) {
+    echo "The capacity canot be zero or negative";
+  } else {
+    if ($oldCapacity != $newCapacity) {
+      $updateRoom = $con->prepare("UPDATE room SET capacity = ? WHERE room_name = ?");
+      $updateRoom->execute([$newCapacity, $roomName]);
+      echo "Room Capacity was updated </br>";
+    }
   }
-
-
 }
+
+if (isset($_POST["RoomCapacity"])) {
+  updateComputer($con, $roomName, $roomInfo_array["computer"], $isComputer);
+}
+
+
+function updateComputer ($con, $roomName, $oldComputer, $newComputer) {
+  if ($newComputer != $oldComputer) {
+    $updateRoom = $con->prepare("UPDATE room SET computer = ? WHERE room_name = ?");
+    $updateRoom->execute([$newComputer, $roomName]);
+    echo "Room Computer was updated </br>";
+  }
+}
+
+if (isset($_POST["RoomCapacity"])) {
+  updateWhiteboard($con, $roomName, $roomInfo_array["blackboard"], $isWhiteboard);
+}
+
+
+function updateWhiteboard($con, $roomName, $oldWhiteboard, $newWhiteboard) {
+   if($oldWhiteboard != $newWhiteboard) {
+     $updateRoom = $con->prepare("UPDATE room SET blackboard = ? WHERE room_name = ?");
+     $updateRoom->execute([$newWhiteboard, $roomName]);
+     echo "Room Whiteboard was updated </br>";
+   }
+}
+
+
 
 ?>
 
