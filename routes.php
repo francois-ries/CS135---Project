@@ -1,13 +1,16 @@
 <?php
   function call($controller, $action) {
     // echo '<br> controller/' . $controller . '_controller.php';
+    // $_GET['controller'] =  $controller ;
+    // $_GET['action'] = $action;    
     require_once('controller/' . $controller . '_controller.php');
     // echo '<br>included controller ';
+
 
     switch($controller) {
       case 'login':
         $controller = new LoginController();
-        
+ 
       break;
       case 'register':
         // we need the model to query the database later in the controller
@@ -22,8 +25,7 @@
 
   // we're adding an entry for the new controller and its actions
   $controllers = array('login' => ['login','error'], //,
-                       'register' => ['register']
-                );
+                       'register' => ['register']);
 
   if (array_key_exists($controller, $controllers)) {
     if (in_array($action, $controllers[$controller])) {

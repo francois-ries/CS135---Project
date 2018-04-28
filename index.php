@@ -1,21 +1,20 @@
 <?php
+global $controller, $action;
   if (isset($_GET['controller']) && isset($_GET['action'])) {
-    echo "<br> controller and action is set";
+    // echo "<br> controller and action is set";
+
   	$controller = $_GET['controller'];
     $action     = $_GET['action'];
+
   } 
 
-  else {
-    // echo "<br>login default";
+  else {  
     $controller = 'login';
     $action     = 'login';   
   }
 
-  require_once('routes.php');
-
-  //call($controller, $action);
-  // echo "<br> controller ".$controller;
-  // echo "<br>action ".$action;
-
-  //require_once('view/login.php'); 
+  // echo "<br> controller is $controller";
+  //echo "<br> action is $action";
+  
+  require_once('view/layout.php'); 
 ?>

@@ -3,8 +3,7 @@ session_start();
 // echo "<br>login_model is called";
 class LoginModel {
 	public static function getlogin()
- 	{
-		
+ 	{		
 		if(isset($_POST['register'])){
 			return 'register';
 		}

@@ -37,7 +37,7 @@
 		          <li class="active" ><a href="UserBooking.php">Make A Reservation</a></li>
         </ul>
 		    <ul class="nav navbar-nav navbar-right">
-		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
+		      <li><a href='http://localhost:8888/CS135---Project/?controller=login&action=login' ><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
 		    </ul>
 		  </div>
 		</nav>

@@ -20,6 +20,9 @@
         <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>-->
         
     </head>
+    <header>
+    <a href='?controller=login&action=login'>Log In</a>
+    </header>
 
     <body class="bg-light" ata-gr-c-s-loaded="true" algoad="[&quot;cjgplikomfepokpgoiomongcpddafcdl&quot;]">
         <div class="container" id = 'ajax_comp'>
@@ -30,7 +33,7 @@
             <!-- Customer Information and Validation  -->
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3">Please enter the following information.</h4>
-                    <form name="frmRegister" method="post">
+                    <form  method="post">
             
                         <div class="row">
                             <div class="col-md-6 mb-3">

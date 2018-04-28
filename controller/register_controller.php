@@ -1,44 +1,47 @@
 <?php
   session_start();
   require_once("model/register_model.php");
+  // require_once('routes.php');
 
   class RegisterController {
-
     public function register() {
       //include_once('view/register.php');
-      echo "called register controller register function";
-
-      if(isset($_POST['register_submit'])){
+      echo "<br> called register controller register function";
       
         $result = RegisterModel::get_register();
     
         if ($result == 'success'){
           
           // include_once( 'view/login.php');
-          echo "register success";
+          echo "<h1 class='h3 mb-3 font-weight-normal'> register success </h1>";
+          header('Location: http://localhost:8888/CS135---Project/?controller=login&action=login');
 
-          return call('login', 'login');
+          return;
+          
         }
 
         else if ($result == 'failed') {
           // include_once( 'view/error.php');
-          echo  "register failed";
-          
-          return call('register', 'register');
+          echo "<h1 class='h3 mb-3 font-weight-normal'> Register failed </h1>";
+          include_once("view/register.php");
+          //return call('register', 'register');
+          return;
         }
 
         else if ($result == 'user existed') {
-          // include_once( 'view/login.php');
+
           echo  "user existed";
-          return call('login', 'login');
+          header('Location: http://localhost:8888/CS135---Project/?controller=login&action=login');
+          include_once("view/login.php");
+
+          return;
           
         }
-      }
-      else{
-
-        include_once("view/register.php");
-
-      }
+        else{
+          echo  "include register view ";
+          include_once("view/register.php");
+        }
     }
+    
   }
 ?>
