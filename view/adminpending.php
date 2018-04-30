@@ -37,13 +37,12 @@ print_r($_SESSION);
 	 
 	}
 
-	  $rooms = hasRoomPending($con);
+	$rooms = hasRoomPending($con);
 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
 		foreach($rooms as $array){
 			$thisRoomId = $array["room_id"];
 			if(isset($_POST["accept".$thisRoomId])){
-				echo "$thisRoomId";
 				$query = "UPDATE Reservation SET approved=TRUE WHERE room_id=?";
 				if($acceptRoom = $con->prepare($query)){
 					$acceptRoom->execute(array($thisRoomId));
@@ -54,6 +53,7 @@ print_r($_SESSION);
 				$denyRoom->execute(array($thisRoomId));
 	  		}
 		}
+		$rooms = hasRoomPending($con);
 	}
 	
 
@@ -108,7 +108,7 @@ print_r($_SESSION);
 					echo "<tr><td>".$thisRoomName."</td>"; //room name
 					echo "<td>".date("jS \of F, Y h:ia", strtotime($thisRoomStart))." to ".date("jS \of F, Y h:ia", strtotime($thisRoomEnd))."</td>"; //time of reservation
 					echo "<td>".$thisRoomUser."</td>"; //room user
-					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept' onClick='window.location.reload()'/>  <input type='submit' name='deny".$thisRoomId."'value='Deny' onClick='window.location.reload()'/></td>";
+					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept' />  <input type='submit' name='deny".$thisRoomId."'value='Deny'/></td>";
 					echo "</tr>";
 				}
 			
