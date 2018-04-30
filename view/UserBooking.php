@@ -219,6 +219,24 @@ function build_search_query($con, $formID_array, $start_time, $end_time ){
 $search_query = build_search_query($con, $formID_array, $start_time, $end_time);
 echo "<br>The query: ".$search_query;
 
+//finds all pending and accepted reservations with user with userid $user_id
+function showResults ($con, $search_query, $formID_array) {
+  $query = $search_query;
+  if($formID_array["under_20"] != 0 || $formID_array["20-40"] != 0 || $formID_array["41-60"] != 0 || $formID_array["above_60"] != 0){
+    if($getRoom = $con->prepare($query)){
+      $getRoom->execute();
+    }
+    $rooms = $getRoom->fetchAll();
+    return $rooms;
+  }
+  return $rooms;
+  }
+
+  $roomsResults = showResults($con, $search_query, $formID_array);
+  $_SESSION["roomsResults"] = $roomsResults;
+  
+
+
 
 // SQL STATEMENTS FOR THE ROOM SEARCH
 
@@ -302,9 +320,58 @@ $needBlackboard = null;
 
 ?>
 
-
-
 <!-- DISPLAY RESULTS -->
+<center>
+<h2>Results</h2>
+</center>
+<center>
+<form method = "post", autocomplete="on">
+<table width = 80%, class="table table-striped">
+  <tr>
+    <th>Room</th>
+    <th>Duration</th>
+    <th>Equipment</th>
+    <th>Room Size</th>
+    <th> </th>
+  </tr>
+  <?php
+        if($roomsResults != NULL){
+          foreach ($roomsResults as $array) {
+              $thisRoomId = $array["room_id"];
+              $thisRoomName = $array["roomname"];
+              //$thisRoomStart = $array["start_time"];
+              //$thisRoomEnd = $array["end_time"];
+              $thisRoomCapacity = $array["capacity"];
+              $thisRoomComputer = "";
+              if($array["computer"] == TRUE){
+                $thisRoomComputer = "computer";
+              }
+              $thisRoomBlackboard = "";
+              if($array["blackboard"] == TRUE){
+                $thisRoomBlackboard = "blackboard";
+              }
+
+              echo "<tr><td>".$thisRoomName." </td>"; //room name
+              echo "<td>".date("jS \of F, Y h:ia", strtotime($start_time))." to ".date("jS \of F, Y h:ia", strtotime($end_time))."</td>"; //time of reservation
+              echo "<td><ul><li>".$thisRoomComputer."</li><li>".$thisRoomBlackboard."</li></ul></td>"; //equipment
+              echo "<td>".$thisRoomCapacity."</td>";
+              echo "<td><input type='submit' name='book".$thisRoomId."' value='Book'/></td>";
+              //echo "<td><button class='btn' type='button'>Book</button></td>";
+              echo "</tr>";
+          }
+        }
+
+      
+      ?>
+</table>
+</form>
+</center>
+
+
+
+</body></html>
+
+<!-- DISPLAY RESULTS 
 <h2>Results</h2>
 <center>
 <table>
@@ -332,5 +399,5 @@ $needBlackboard = null;
 
 
 
-</body></html>
+</body></html>--> 
 
