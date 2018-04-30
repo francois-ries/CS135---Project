@@ -1,7 +1,7 @@
 <?php 
 
 session_start(); 
-print_r($_SESSION);
+//print_r($_SESSION);
 
 if (isset($_SESSION['userid'])) {
     $user_id = $_SESSION['userid'];
@@ -164,6 +164,7 @@ $roomsResults = $_SESSION["roomsResults"];
           if($createReservation = $con->prepare($query)){
             $createReservation->execute(array($thisRoomId, $user_id, $thisRoomStart, $thisRoomEnd, NULL));
           }
+          echo "<center><h3>Room reservation has been sent</h3></center>";
         }
     }
   }
