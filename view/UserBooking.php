@@ -181,7 +181,7 @@ function build_search_query($con, $formID_array, $start_time, $end_time ){
   // campus location if selected all or none, dont care, if one -three selected either one is fine, roomsize is a must 
   $state = false;
   // global $query ;
-  $query= "SELECT roomname, room_id FROM room WHERE ";
+  $query= "SELECT roomname, room_id, capacity, computer, blackboard  FROM room WHERE ";
   // echo "<br>The query: ".$query;
 
   // $query = $query." WHERE ";
