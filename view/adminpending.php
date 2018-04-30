@@ -1,7 +1,7 @@
 <?php 
 
 session_start(); 
-print_r($_SESSION);
+//print_r($_SESSION);
 
 ?>
 
@@ -78,7 +78,7 @@ print_r($_SESSION);
 		    <ul class="nav navbar-nav">
 		      <li><a href="adminview.php">All Reservations</a></li>
 		      <li class="active"><a href="adminpending.php">Pending Reservations</a></li>
-		      <li><a href="AdminUpdateRoomFeatures.php">Room Updates</a></li>
+		      <li><a href="AdminUpdateRoomFeaturesv2.php">Room Updates</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
