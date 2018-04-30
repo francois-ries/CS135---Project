@@ -1,3 +1,13 @@
+<?php 
+
+session_start(); 
+print_r($_SESSION);
+
+if (isset($_SESSION['userid'])) {
+    $user_id = $_SESSION['userid'];
+}
+
+?>
 <!DOCTYPE html>
 <!-- saved from url=(0057)https://getbootstrap.com/docs/4.0/examples/sticky-footer/ -->
 
@@ -32,10 +42,9 @@
 		      <a class="navbar-brand" href="#">CMC Room Reservations</a>
 		    </div>
 		    <ul class="nav navbar-nav">
-              	<!--- <li><a href="userview.php">Current Reservations</a></li> --> 
-              <!--- <li ><a href="AdminUpdateRoomFeatures.php">Update Room Features</a></li> -->
-		          <li class="active" ><a href="UserBooking.php">Make A Reservation</a></li>
-        </ul>
+			<li><a href="userview.php">Current Reservations</a></li>
+          		<li class="active"><a href="UserBooking.php">Search</a></li>
+        		</ul>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li><a href='http://localhost:8888/CS135---Project/?controller=login&action=login' ><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
 		    </ul>
@@ -124,12 +133,40 @@ $start_time = null;
 if (isset($_POST["start_time"]) && isset($_POST["date"]) ) {
   $time = trim($_POST["start_time"]);
   $start_time = date('Y-m-d H:i:s', strtotime("$selectDate $time"));
+  if (!isset($_SESSION["roomStart"])) {
+    $_SESSION["roomStart"] = $start_time;
+    echo "session vairable toom start" .$roomStart;
+  }
 }
 $end_time = null;
 if (isset($_POST["end_time"]) && isset($_POST["date"])) {
   $time = trim($_POST["end_time"]);
   $end_time = date('Y-m-d H:i:s', strtotime("$selectDate $time"));
-  echo $end_time;
+  //echo $end_time;
+  if (!isset($_SESSION["roomEnd"])) {
+    $_SESSION["roomEnd"] = $end_time;
+  }
+}
+
+
+$roomsResults = $_SESSION["roomsResults"];
+
+  if($_SERVER['REQUEST_METHOD'] == "POST"){
+    if($roomsResults != NULL){
+      foreach($roomsResults as $array){
+        $thisRoomId = $array["room_id"];
+        $thisRoomStart = $_SESSION["roomStart"];
+        $thisRoomEnd  = $_SESSION["roomEnd"];
+        if(isset($_POST["book".$thisRoomId])){
+          $query = "INSERT INTO Reservation (room_id, user_id, start_time, end_time, approved) VALUES (?,?,?,?,?)";
+          //$query = "INSERT INTO Reservation (room_id, user_id, start_time, end_time, approved) VALUES ($thisRoomId, $user_id, $thisRoomStart, $thisRoomEnd, NULL)";
+          //echo $query;
+          if($createReservation = $con->prepare($query)){
+            $createReservation->execute(array($thisRoomId, $user_id, $thisRoomStart, $thisRoomEnd, NULL));
+          }
+        }
+    }
+  }
 }
 
 // Stores in array the if a specific box has been selected
