@@ -255,7 +255,7 @@ function build_search_query($con, $formID_array, $start_time, $end_time ){
 }
 
 $search_query = build_search_query($con, $formID_array, $start_time, $end_time);
-echo "<br>The query: ".$search_query;
+// echo "<br>The query: ".$search_query;
 
 //finds all pending and accepted reservations with user with userid $user_id
 function showResults ($con, $search_query, $formID_array) {
