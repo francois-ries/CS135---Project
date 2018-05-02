@@ -29,7 +29,7 @@ session_start();
 	//finds all pending reservations
 	function hasRoomPending ($con) {
 
-		$getRoom = $con->prepare("SELECT R.roomname, R.room_id, O.room_id, U.user_id, O.start_time, O.end_time FROM Room R, Reservation O, User U WHERE R.room_id=O.room_id AND O.user_id=U.user_id AND O.approved IS NULL");
+		$getRoom = $con->prepare("SELECT R.roomname, R.room_id, O.room_id, U.user_id, O.start_time, O.end_time, O.res_id FROM Room R, Reservation O, User U WHERE R.room_id=O.room_id AND O.user_id=U.user_id AND O.approved IS NULL");
 		$getRoom->execute();
 		$rooms = $getRoom->fetchAll();
 
@@ -37,21 +37,22 @@ session_start();
 	 
 	}
 
+
 	$rooms = hasRoomPending($con);
 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
 		foreach($rooms as $array){
-			$thisRoomId = $array["room_id"];
-			if(isset($_POST["accept".$thisRoomId])){
-				$query = "UPDATE Reservation SET approved=TRUE WHERE room_id=?";
+			$thisRoomRes = $array["res_id"];
+			if(isset($_POST["accept".$thisRoomRes])){
+				$query = "UPDATE Reservation SET approved=TRUE WHERE res_id=?";
 				if($acceptRoom = $con->prepare($query)){
-					$acceptRoom->execute(array($thisRoomId));
+					$acceptRoom->execute(array($thisRoomRes));
 				}
 			}
-			if(isset($_POST["deny".$thisRoomId])){
-		  		$denyRoom = $con->prepare("UPDATE Reservation SET approved=FALSE WHERE room_id=?");
-				$denyRoom->execute(array($thisRoomId));
-	  		}
+			if(isset($_POST["deny".$thisRoomRes])){
+		  		$denyRoom = $con->prepare("UPDATE Reservation SET approved=FALSE WHERE res_id=?");
+				$denyRoom->execute(array($thisRoomRes));
+	  		};
 		}
 		$rooms = hasRoomPending($con);
 	}
@@ -81,7 +82,7 @@ session_start();
 		      <li><a href="AdminUpdateRoomFeaturesv2.php">Room Updates</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
-		      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
+		       <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
 		    </ul>
 		  </div>
 		</nav>
@@ -104,11 +105,12 @@ session_start();
 					$thisRoomStart = $array["start_time"];
 					$thisRoomEnd = $array["end_time"];
 					$thisRoomUser = $array["user_id"];
+					$thisRoomRes = $array["res_id"];
 
 					echo "<tr><td>".$thisRoomName."</td>"; //room name
 					echo "<td>".date("jS \of F, Y h:ia", strtotime($thisRoomStart))." to ".date("jS \of F, Y h:ia", strtotime($thisRoomEnd))."</td>"; //time of reservation
 					echo "<td>".$thisRoomUser."</td>"; //room user
-					echo "<td><input type='submit' name='accept".$thisRoomId."'value='Accept' />  <input type='submit' name='deny".$thisRoomId."'value='Deny'/></td>";
+					echo "<td><input type='submit' name='accept".$thisRoomRes."'value='Accept'/>  <input type='submit' name='deny".$thisRoomRes."'value='Deny'/></td>";
 					echo "</tr>";
 				}
 			
